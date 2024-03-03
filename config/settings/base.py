@@ -93,6 +93,10 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "baimanush_backend.users.apps.UsersConfig",
+    "baimanush_backend.articles.apps.ArticlesConfig",
+    "baimanush_backend.categories.apps.CategoriesConfig",
+    "baimanush_backend.photos.apps.PhotosConfig",
+    "baimanush_backend.videos.apps.VideosConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
