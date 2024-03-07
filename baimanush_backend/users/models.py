@@ -12,7 +12,7 @@ from utils.behaviours import (
 
 class User(AbstractUser, UUIDMixin, MobileMixin):
     """
-    Default custom user model for traderyt_backend.
+    Default custom user model .
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
