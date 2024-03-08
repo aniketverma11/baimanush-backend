@@ -11,7 +11,7 @@ class PostListViewset(viewsets.ViewSet):
     authentication_classes = []
     queryset = Post.objects.filter(is_deleted=False, is_for_members=False).order_by("-created")
 
-    def 
+    
 
 
 

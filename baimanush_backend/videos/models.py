@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
@@ -8,7 +9,7 @@ from baimanush_backend.categories.models import *
 # Create your models here.
 class Video(SlugMixin, StatusMixin):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
-    video = models.TextField(blank=True)
+    video = RichTextField(config_name='allow_iframes')
     title = models.CharField(_("title"), max_length=255, null=False, blank=False, validators=[validator_ascii])
     short_description = models.TextField(_("short description"), max_length=500, blank=True, validators=[validator_ascii])
     content = RichTextUploadingField(_("content"), blank=True, null=True)

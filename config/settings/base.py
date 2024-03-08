@@ -390,5 +390,12 @@ CKEDITOR_CONFIGS = {
         'mathJaxLib': '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',  # Updated MathJax CDN link
         'tabSpaces': 4,
         'extraPlugins': ','.join(['a11yhelp', 'about', 'autogrow', 'autolink', 'codesnippet', 'clipboard', 'dialog', 'embed', 'filetools', 'find', 'image2', 'link', 'notification', 'pastefromword', 'preview', 'showblocks', 'specialchar', 'table', 'uploadimage']),  # Reduced unnecessary plugins
+    },
+    'allow_iframes': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Iframe'],
+        ],
+        'extraAllowedContent': 'iframe[src]',
     }
 }

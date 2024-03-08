@@ -8,7 +8,8 @@ from import_export import resources
 
 class ImageInline(admin.TabularInline):
     model = Images
-    extra = 3  #
+    extra = 3  
+
 class PhotosResource(resources.ModelResource):
     class Meta:
         model = Photos
