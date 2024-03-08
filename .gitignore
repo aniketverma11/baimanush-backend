@@ -279,3 +279,5 @@ baimanush_backend/media/
 .env
 env
 baimanush_backend/articles/migrations/
+baimanush_backend/photos/migrations/
+baimanush_backend/videos/migrations/

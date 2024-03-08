@@ -24,6 +24,7 @@ class Post(PostMixin):
 	sub_categories = models.ManyToManyField(SubCategory)
 	tags = models.ManyToManyField(Tag, blank=True)
 	author = models.CharField(_("Author"), max_length=50, blank=True)
+	is_for_members = models.BooleanField(_("Members Only"), default=False)
 
 	def __str__(self):
 		return str(self.title)
@@ -37,3 +38,5 @@ class SubscribeMail(StatusMixin, TimeStampedModel):
 
     def __str__(self):
         return str(self.mail)
+
+

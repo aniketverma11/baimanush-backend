@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.conf import settings
 from django.core import signing
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Third-party imports
 from random import choice, SystemRandom
@@ -129,9 +130,25 @@ def get_subscription_request_subject_message(id, frontend_redirect_url):
     return {"subject": subject, "message": message}
 
 
-        
+def paginate(request, qs, nb):
+    paginator = Paginator(qs, nb)  # Show nb objects per page
+    page = request.GET.get('page')
+    # page = 2
+    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        objects = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        objects = paginator.page(paginator.num_pages)
 
-    
+    # Get the index of the current page
+    index = objects.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range)[start_index:end_index]
+    last_page_number = int(math.ceil(len(qs)/nb))
 
-   
-            
+    return [objects, page_range, last_page_number]
