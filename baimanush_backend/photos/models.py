@@ -6,7 +6,6 @@ from model_utils.models import TimeStampedModel
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
 
-from embed_video.fields import EmbedVideoField
 
 # Create your models here
 class Photos(SlugMixin, StatusMixin, TimeStampedModel):
