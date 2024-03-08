@@ -376,7 +376,9 @@ CKEDITOR_CONFIGS = {
         ],
         'toolbar': 'YouCustomToolbarConfig',  # Corrected toolbar name
         'toolbarGroups': [{'name': 'document', 'groups': ['mode', 'document', 'doctools']}],
-        'width': 800,  # Adjust the width as needed
+
+        'height': 600, 
+        'width': 600,  # Adjust the width as needed
         'toolbarCanCollapse': True,
         'mathJaxLib': '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',  # Updated MathJax CDN link
         'tabSpaces': 4,
