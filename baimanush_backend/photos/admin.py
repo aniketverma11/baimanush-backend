@@ -21,3 +21,4 @@ class PhotosAdmin(ImportExportModelAdmin):
 
 
 admin.site.register(Photos, PhotosAdmin)
+admin.site.register(Images)
