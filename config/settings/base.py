@@ -89,6 +89,9 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    "import_export",
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 LOCAL_APPS = [
@@ -96,7 +99,8 @@ LOCAL_APPS = [
     "baimanush_backend.articles.apps.ArticlesConfig",
     "baimanush_backend.categories.apps.CategoriesConfig",
     "baimanush_backend.photos.apps.PhotosConfig",
-    "baimanush_backend.videos.apps.VideosConfig"
+    "baimanush_backend.videos.apps.VideosConfig",
+    "baimanush_backend.utils.apps.UtilsConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -349,3 +353,33 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar_YouCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms', 'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+            '/',
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'youcustomtools', 'items': ['Preview', 'Maximize']},
+        ],
+        'toolbar': 'YouCustomToolbarConfig',  # Corrected toolbar name
+        'toolbarGroups': [{'name': 'document', 'groups': ['mode', 'document', 'doctools']}],
+        'width': 800,  # Adjust the width as needed
+        'toolbarCanCollapse': True,
+        'mathJaxLib': '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',  # Updated MathJax CDN link
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(['a11yhelp', 'about', 'autogrow', 'autolink', 'codesnippet', 'clipboard', 'dialog', 'embed', 'filetools', 'find', 'image2', 'link', 'notification', 'pastefromword', 'preview', 'showblocks', 'specialchar', 'table', 'uploadimage']),  # Reduced unnecessary plugins
+    }
+}

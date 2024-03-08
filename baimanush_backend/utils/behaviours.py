@@ -8,8 +8,11 @@ from model_utils.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 
-from .managers import StatusMixinManager
+from ckeditor_uploader.fields import RichTextUploadingField
+
+from .managers import StatusMixinManager, PostMixinManager
 from .utils import upload_location, validator_ascii, validator_pan_no
+
 
 
 class StatusMixin(models.Model):
@@ -147,8 +150,156 @@ class UserStampedMixin(models.Model):
     class Meta:
         abstract = True
 
+class MetaTagMixin(models.Model):
+    meta_title = models.TextField(_("Meta Title"), blank=True, null=True, validators=[validator_ascii])
+    meta_description = models.TextField(_("Meta Description"), blank=True, null=True, validators=[validator_ascii])
+    meta_keywords = models.TextField(_("Meta Keywords"), blank=True, null=True, validators=[validator_ascii])
 
+    class Meta:
+        abstract = True
         
+class SlugMixin(models.Model):
+    slug = models.SlugField(blank=True, null=True, max_length=255)
+
+    def save(self, *args, **kwargs):
+        """
+        slug shouldn't have spaces
+        """
+        if not self.slug:
+            self.slug = create_slug(self)
+        if self.slug:
+            self.slug = self.slug.replace(" ", "")
+        super(SlugMixin, self).save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
+
+class GeoTagMixin(models.Model):
+    lat = models.CharField(_("latitude"), blank=True, null=True, max_length=20)
+    lng = models.CharField(_("longitude"), blank=True, null=True, max_length=20)
+
+    class Meta:
+        abstract = True
+
+class ImageMixin(models.Model):
+    image = models.ImageField(_("image"), upload_to=upload_location, null=False, blank=False)
+    image_alt = models.CharField(_("image alt"), max_length=100, blank=True, validators=[validator_ascii])
+
+    class Meta:
+        abstract = True
 
 
+class PostMixin(SlugMixin, ImageMixin, MetaTagMixin, StatusMixin, TimeStampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
+    title = models.CharField(_("title"), max_length=255, null=False, blank=False, validators=[validator_ascii])
+    short_description = models.TextField(_("short description"), max_length=500, blank=True,
+                                         validators=[validator_ascii])
+    content = RichTextUploadingField(_("content"), blank=True, null=True)
+    # tag = models.CharField(_("tag"), max_length=255, null=True, blank=True, validators=[validator_ascii])
+    publish = models.DateTimeField(_("publish datetime"), auto_now=False, auto_now_add=False, default=timezone.now)
 
+    views_count = models.PositiveIntegerField(_("Views Count"), default=0, blank=True)
+    # external_url = models.URLField(_("External URL"), max_length=500, blank=True, null=True)
+    objects = PostMixinManager()
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def get_meta_tags(self):
+        # Twitter Tags
+        return_string = '<meta name = "twitter:card" content = "summary" />'
+        return_string += '<meta property="og:locale" content="en_US" />'
+        return_string += '<meta property="og:site_name" content="baimanus" />'
+        return_string += '<meta name = "twitter:site" content = "@baimanus" />'
+
+        if self.short_description:
+            return_string += '<meta name = "twitter:description" content = "' + str(self.short_description) + '" />'
+        # OG Tags
+        return_string += "<meta property='og:url' content='" + settings.SITE_URL + self.get_absolute_url() + "' />"
+        return_string += "<meta property='og:description' content='" + str(self.meta_description) + "' />"
+        return_string += "<meta property='og:type' content='article' />"
+        # return_string += "<meta property='og:article:published_time' content='" + str(self.publish) + "' />"
+        if self.user:
+            return_string += "<meta property='og:article:author' content='" + str(self.user.first_name) + "' />"
+        # return_string += "<meta property='og:article:tag' content='" + self.get_concatenated_categories + "' />"
+        if self.title:
+            return_string += "<meta property='og:title' content='" + str(self.title) + "' />"
+            return_string += '<meta name = "twitter:title" content = "' + str(self.title) + '" />'
+        if self.image:
+            # for https image urls, og:image:secure_url works
+            return_string += "<meta property='og:image:secure_url' content='" + str(self.image.url) + "' >"
+            return_string += "<meta property='og:image' content='" + str(self.image.url) + "' >"
+            return_string += "<meta property='og:image:height' content='" + str(self.image.height) + "' >"
+            return_string += "<meta property='og:image:width' content='" + str(self.image.width) + "' >"
+            return_string += "<meta property='twitter:image' content='" + str(self.image.url) + "' >"
+            return_string += "<meta property='twitter:image:src' content='" + str(self.image.url) + "' >"
+
+        return return_string
+
+    class Meta:
+        abstract = True
+        ordering = ["-created", "-modified"]
+
+
+class CommentMixin(StatusMixin, TimeStampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
+    content = models.TextField(_("content"), blank=True, null=True, validators=[validator_ascii])
+
+    def __str__(self):
+        return self.content
+
+    class Meta:
+        abstract = True
+
+
+class LikeMixin(TimeStampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return self.user
+
+    class Meta:
+        abstract = True
+        ordering = ["-created", "-modified"]
+
+
+# class TopicMixin(SlugMixin, MetaTagMixin, ImageMixin, TimeStampedModel):
+#     name = models.CharField(_("name"), max_length=100, null=False, blank=False, validators=[validator_ascii])
+#     title = models.CharField(_("title"), max_length=255, null=True, blank=True, validators=[validator_ascii])
+#     icon = models.CharField(_("icon"), max_length=100, null=True, blank=True, validators=[validator_ascii])
+#     icon_image = models.ImageField(_("Icon Image"), upload_to=upload_location, null=True, blank=True)
+#     content = RichTextUploadingField(_("content"), blank=True, null=True)
+#     pipedrive_id = models.PositiveIntegerField(_('Pipedrive ID'), null=True, blank=True)
+#     # posts = models.ManyToManyField("blog.Post",blank=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         abstract = True
+
+
+class FAQMixin(StatusMixin, TimeStampedModel):
+    question = models.CharField(_('FAQ Question'), max_length=255, blank=True, null=True)
+    answer = RichTextUploadingField(_('FAQ Answer'), blank=True, null=True)
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        abstract = True
+
+
+class TopicMixin(SlugMixin, MetaTagMixin, ImageMixin, TimeStampedModel):
+    name = models.CharField(_("name"), max_length=100, null=False, blank=False, validators=[validator_ascii])
+    title = models.CharField(_("title"), max_length=255, null=True, blank=True, validators=[validator_ascii])
+    icon = models.CharField(_("icon"), max_length=100, null=True, blank=True, validators=[validator_ascii])
+    icon_image = models.ImageField(_("Icon Image"), upload_to=upload_location, null=True, blank=True)
+    content = RichTextUploadingField(_("content"), blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        abstract = True

@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UtilsConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
     name = "baimanush_backend.utils"
-    verbose_name = _("Utils")
 
     def ready(self):
         try:
