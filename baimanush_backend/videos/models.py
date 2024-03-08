@@ -5,8 +5,6 @@ from django.urls import reverse
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
 
-from embed_video.fields import EmbedVideoField
-
 # Create your models here.
 class Video(SlugMixin, StatusMixin):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
