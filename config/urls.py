@@ -72,3 +72,8 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+
+admin.site.site_header = "Baimanus Admin"
+# admin.site.site_header = "https://www.dalmiacement.com/futuretoday/images/future-today.png"
+admin.site.site_title = "Baimanus Administrator"
+admin.site.index_title = "Welcome to Baimanus Administrator"
