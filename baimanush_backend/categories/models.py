@@ -1,9 +1,9 @@
 from django.db import models
 
-from baimanush_backend.utils.behaviours import UUIDMixin, StatusMixin
+from baimanush_backend.utils.behaviours import UUIDMixin, StatusMixin, SlugMixin
 
 
-class Category(UUIDMixin, StatusMixin):
+class Category(SlugMixin, UUIDMixin, StatusMixin):
     name = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
 
@@ -14,7 +14,7 @@ class Category(UUIDMixin, StatusMixin):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
-class SubCategory(UUIDMixin, StatusMixin):
+class SubCategory(SlugMixin, UUIDMixin, StatusMixin):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True)

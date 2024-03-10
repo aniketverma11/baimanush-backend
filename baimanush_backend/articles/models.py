@@ -17,6 +17,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.tag
+	
 class Post(PostMixin):
 	category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
 	minutes_read = models.PositiveIntegerField("Minutes Read", default=5, blank=False, null=False)
@@ -25,6 +26,8 @@ class Post(PostMixin):
 	tags = models.ManyToManyField(Tag, blank=True)
 	author = models.CharField(_("Author"), max_length=50, blank=True)
 	is_for_members = models.BooleanField(_("Members Only"), default=False)
+	home_screen =  models.BooleanField(_("For main grid"), default=False)
+	is_draft = models.BooleanField(_("Draft"), default=True)
 
 	def __str__(self):
 		return str(self.title)

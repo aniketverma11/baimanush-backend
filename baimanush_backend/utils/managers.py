@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class StatusMixinManager(models.Manager):
     def all(self, *args, **kwargs):
