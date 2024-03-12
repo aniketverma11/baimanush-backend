@@ -10,4 +10,6 @@ router.register(r'subcategories', SubCategoryViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-]
+    path("categories/", CategoryViewSet.as_view({"get":"get"})),
+    path("subcategories/", SubCategoryViewSet.as_view({"get":"get"})),
+]   
