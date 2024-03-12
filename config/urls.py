@@ -22,7 +22,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("baimanush_backend.users.urls", namespace="users")),
-    path("posts/", include("baimanush_backend.articles.urls")),
+    path("api/v1/posts/", include("baimanush_backend.articles.urls")),
     path("api/v1/", include("baimanush_backend.categories.urls")),
     # Your stuff: custom urls includes go here
     # ...
