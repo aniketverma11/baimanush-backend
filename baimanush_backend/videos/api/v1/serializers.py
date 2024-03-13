@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from baimanush_backend.articles.models import Post
+from baimanush_backend.videos.models import Video
 
 
-class PostListSerializer(serializers.ModelSerializer):
+class VideoListSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
 
@@ -18,23 +18,17 @@ class PostListSerializer(serializers.ModelSerializer):
             return obj.category.slug
         return ''
 
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         request = self.context.get('request')
-    #         return request.build_absolute_uri(obj.image.url)
-    #     return ''
-
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description[:200] + '...'
         return ''
 
     class Meta:
-        model = Post
-        fields = ('slug', 'short_description', 'title', 'image', 'image_alt', 'category', 'tags', 'created_by', "author")
+        model = Video
+        fields = ('slug', 'short_description', 'title', 'image', 'image_alt', 'category', 'tags', 'author')
 
 
-class PostDetailSerializer(serializers.ModelSerializer):
+class VideoDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Post
+        model = Video
         fields = '__all__'
