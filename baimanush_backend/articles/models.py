@@ -18,7 +18,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.tag
 	
-class Post(PostMixin):
+class Post(PostMixin, UserStampedMixin):
 	category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
 	minutes_read = models.PositiveIntegerField("Minutes Read", default=5, blank=False, null=False)
 	references = models.ManyToManyField(Reference)

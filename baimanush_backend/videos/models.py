@@ -7,8 +7,7 @@ from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
 
 # Create your models here.
-class Video(SlugMixin, StatusMixin):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
+class Video(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     video = RichTextField(config_name='allow_iframes')
     title = models.CharField(_("title"), max_length=255, null=False, blank=False, validators=[validator_ascii])
     short_description = models.TextField(_("short description"), max_length=500, blank=True, validators=[validator_ascii])
@@ -19,6 +18,7 @@ class Video(SlugMixin, StatusMixin):
     sub_categories = models.ManyToManyField(SubCategory)
     author = models.CharField(_("Author"), max_length=50, blank=True)
     is_for_members = models.BooleanField(_("Members Only"), default=False)
+    is_draft = models.BooleanField(_("Draft"), default=True)
 
     def __str__(self):
         return str(self.title)
