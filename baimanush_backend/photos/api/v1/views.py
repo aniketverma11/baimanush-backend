@@ -7,7 +7,7 @@ from .serializers import PhotosDetailSerializer, ImagesSerializer, PhotoslistSer
 class PhotosViewSet(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
-    queryset = Photos.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-created")# Photos.objects.prefetch_related('images_set').all()
+    queryset = Photos.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-modified")# Photos.objects.prefetch_related('images_set').all()
     serializer_class = PhotoslistSerializer
 
 
