@@ -39,6 +39,7 @@ class PostDetailViewset(viewsets.ViewSet):
         category_slug = kwargs.get('category_slug')
         slug = kwargs.get('slug')
         
+
         article = self.queryset.filter(category__slug=category_slug, slug=slug).first()
 
         if article:
@@ -51,16 +52,17 @@ class PostDetailViewset(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
-        else:
-            return cached_response(
-                request=request,
-                status=status.HTTP_400_BAD_REQUEST,
-                response_status="failed",
-                message="post not found",
-                data={},
-                meta={},
-            )
-
+        
+        article = self.queryset.filter(slug=slug).first()
+        serializer = PostDetailSerializer(article)
+        return cached_response(
+            request=request,
+            status=status.HTTP_200_OK,
+            response_status="success",
+            message="",
+            data=serializer.data,
+            meta={},
+        )
 
 
 
