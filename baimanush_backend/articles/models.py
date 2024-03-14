@@ -5,13 +5,13 @@ from django.urls import reverse
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
 
-class Reference(StatusMixin, TimeStampedModel):
+class Reference(SlugMixin, StatusMixin, TimeStampedModel):
 	title = models.CharField('Title', max_length=512, blank=True, null=True)
 	url = models.URLField('url', blank=False, null=False)
 
 	def __str__(self):
 		return str(self.url)
-class Tag(models.Model):
+class Tag(SlugMixin, StatusMixin, TimeStampedModel):
     tag = models.CharField(_('Tag'), max_length=255, blank=False, null=False,
                                       validators=[validator_ascii])
 

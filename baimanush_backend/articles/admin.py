@@ -1,5 +1,5 @@
 from django.contrib import admin
-from baimanush_backend.articles.models import Post, Reference,SubscribeMail
+from baimanush_backend.articles.models import Post, Reference,SubscribeMail, Tag
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
@@ -22,7 +22,14 @@ admin.site.register(Post, PostAdmin)
 @admin.register(Reference)
 class ReferenceAdmin(admin.ModelAdmin):
     model = Reference
+    list_display = ['slug', "title", "url", "created", "modified", "is_active", "is_deleted"]
 
 @admin.register(SubscribeMail)
 class SubscribeMailAdmin(admin.ModelAdmin):
-	model = SubscribeMail
+    model = SubscribeMail
+    ist_display = ["mail", "created", "modified", "is_active", "is_deleted"]
+     
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    model = Tag
+    list_display = ['slug', "tag", "created", "modified", "is_active", "is_deleted"]
