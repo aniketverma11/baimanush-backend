@@ -11,7 +11,7 @@ class PostResource(resources.ModelResource):
 
 class PostAdmin(ImportExportModelAdmin):
     resource_class = PostResource
-    list_display = ('slug', 'title', 'category', 'minutes_read', 'author', 'is_for_members', 'home_screen', 'is_draft', 'publish', 'views_count', "created", 'created_by')
+    list_display = ('slug', 'title', 'category', 'minutes_read', 'author', 'is_for_members', 'home_screen', 'is_draft','is_trending', 'publish', 'views_count', "created", 'created_by')
     list_filter = ('slug','category', 'is_for_members', 'home_screen', 'is_draft')
     search_fields = ('slug','title', 'author')
     filter_horizontal = ('sub_categories', 'tags')
