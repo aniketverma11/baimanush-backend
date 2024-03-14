@@ -11,13 +11,13 @@ from baimanush_backend.articles.models import Tag
 # Create your models here.
 class Video(SlugMixin,ImageMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     video = RichTextField(config_name='allow_iframes')
-    title = models.CharField(_("title"), max_length=255, null=False, blank=False, validators=[validator_ascii])
-    short_description = models.TextField(_("short description"), max_length=500, blank=True, validators=[validator_ascii])
+    title = models.CharField(_("title"), max_length=255, null=False, blank=False)
+    short_description = models.TextField(_("short description"), max_length=500, blank=True)
     content = RichTextUploadingField(_("content"), blank=True, null=True)
     publish = models.DateTimeField(_("publish datetime"), auto_now=False, auto_now_add=False, default=timezone.now)
     category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
     minutes_read = models.PositiveIntegerField("Minutes Read", default=5, blank=False, null=False)
-    sub_categories = models.ManyToManyField(SubCategory)
+    sub_categories = models.ManyToManyField(SubCategory, blank=True)
     author = models.CharField(_("Author"), max_length=50, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     home_screen =  models.BooleanField(_("Breaking News"), default=False)
