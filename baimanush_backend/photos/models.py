@@ -5,6 +5,7 @@ from model_utils.models import TimeStampedModel
 
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
+from baimanush_backend.articles.models import Tag
 
 
 # Create your models here
@@ -17,6 +18,7 @@ class Photos(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     minutes_read = models.PositiveIntegerField("Minutes Read", default=5, blank=False, null=False)
     sub_categories = models.ManyToManyField(SubCategory)
     author = models.CharField(_("Author"), max_length=50, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     is_for_members = models.BooleanField(_("Members Only"), default=False)
     is_draft = models.BooleanField(_("Draft"), default=True)
 
