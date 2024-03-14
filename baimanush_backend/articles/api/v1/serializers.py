@@ -1,10 +1,16 @@
 from rest_framework import serializers
-from baimanush_backend.articles.models import Post
+from baimanush_backend.articles.models import Post, Tag
+from baimanush_backend.categories.api.v1.serializers import CategoryListSerializer, SubcategoryListSerializer
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ["slug", "tag"]
 
 class PostListSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -13,10 +19,10 @@ class PostListSerializer(serializers.ModelSerializer):
         queryset = queryset.select_related('category')
         return queryset
 
-    def get_category(self, obj):
-        if obj.category:
-            return obj.category.slug
-        return ''
+    # def get_category(self, obj):
+    #     if obj.category:
+    #         return obj.category.slug
+    #     return ''
 
     # def get_image(self, obj):
     #     if obj.image:
@@ -35,12 +41,11 @@ class PostListSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
+    sub_categories = SubcategoryListSerializer(many=True)
+    tags = TagSerializer(many=True)
     class Meta:
         model = Post
         fields = '__all__'
     
-    def get_category(self, obj):
-        if obj.category:
-            return obj.category.name
-        return ''
+    

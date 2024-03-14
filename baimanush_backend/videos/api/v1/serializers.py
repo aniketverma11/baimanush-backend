@@ -1,10 +1,14 @@
 from rest_framework import serializers
 from baimanush_backend.videos.models import Video
+from baimanush_backend.categories.api.v1.serializers import CategoryListSerializer, SubcategoryListSerializer
+from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
 
 class VideoListSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
+    sub_categories = SubcategoryListSerializer(many=True)
+    tags = TagSerializer(many=True)
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -29,12 +33,9 @@ class VideoListSerializer(serializers.ModelSerializer):
 
 
 class VideoDetailSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
+    sub_categories = SubcategoryListSerializer(many=True)
+    tags = TagSerializer(many=True)
     class Meta:
         model = Video
         fields = '__all__'
-
-    def get_category(self, obj):
-        if obj.category:
-            return obj.category.name
-        return ''
