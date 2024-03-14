@@ -19,8 +19,10 @@ class Photos(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     sub_categories = models.ManyToManyField(SubCategory)
     author = models.CharField(_("Author"), max_length=50, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    home_screen =  models.BooleanField(_("Breaking News"), default=False)
     is_for_members = models.BooleanField(_("Members Only"), default=False)
     is_draft = models.BooleanField(_("Draft"), default=True)
+    is_trending = models.BooleanField(_("Trending"), default=True)
 
     def __str__(self):
         return str(self.title)

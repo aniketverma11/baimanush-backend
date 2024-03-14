@@ -26,8 +26,9 @@ class Post(PostMixin, UserStampedMixin):
 	tags = models.ManyToManyField(Tag, blank=True)
 	author = models.CharField(_("Author"), max_length=50, blank=True)
 	is_for_members = models.BooleanField(_("Members Only"), default=False)
-	home_screen =  models.BooleanField(_("For main grid"), default=False)
+	home_screen =  models.BooleanField(_("Breaking News"), default=False)
 	is_draft = models.BooleanField(_("Draft"), default=True)
+	is_trending = models.BooleanField(_("Trending"), default=True)
 
 	def __str__(self):
 		return str(self.title)
