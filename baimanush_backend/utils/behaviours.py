@@ -11,7 +11,7 @@ from django.core.validators import RegexValidator
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from .managers import StatusMixinManager, PostMixinManager
-from .utils import upload_location, validator_ascii, validator_pan_no
+from .utils import upload_location, validator_ascii, validator_pan_no, create_slug
 
 
 

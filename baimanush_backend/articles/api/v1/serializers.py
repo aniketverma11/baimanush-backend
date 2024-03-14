@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.articles.models import Post, Tag
+from baimanush_backend.articles.models import Post, Tag, Reference
 from baimanush_backend.categories.api.v1.serializers import CategoryListSerializer, SubcategoryListSerializer
 
 class TagSerializer(serializers.ModelSerializer):
@@ -7,10 +7,16 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ["slug", "tag"]
 
+class ReferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reference
+        fields = ["slug", "title", "url"]
+
 class PostListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
+
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -44,6 +50,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
+    references = ReferenceSerializer(many=True)
     class Meta:
         model = Post
         fields = '__all__'

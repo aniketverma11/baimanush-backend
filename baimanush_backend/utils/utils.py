@@ -152,3 +152,36 @@ def paginate(request, qs, nb):
     last_page_number = int(math.ceil(len(qs)/nb))
 
     return [objects, page_range, last_page_number]
+
+
+def create_slug(instance, new_slug=None, append_string=None):
+    if new_slug is not None:
+        slug = new_slug
+    elif instance.slug:
+        slug = instance.slug
+    elif hasattr(instance, "title"):
+        slug = slugify(instance.title)
+    elif hasattr(instance, "name"):
+        slug = slugify(instance.name)
+    elif hasattr(instance, "tag"):
+        slug = slugify(instance.tag)
+    else:
+        slug = None
+    if append_string and slug:
+        slug = slugify(append_string + slug)
+    if slug:
+        qs = instance.__class__.objects.filter(slug=slug).order_by("-id")
+        exists = True if qs.exists() and qs.first().id != instance.id else False
+        if exists:
+            # print qs
+            # print "old_slug",slug
+            new_slug = "%s-%s" % (slug, generate_random_string(length=5))
+            # print "new_slug",new_slug
+            return create_slug(instance, new_slug=new_slug)
+        if len(slug) > 50:
+            slug = slug[:44] + "-" + generate_random_string(length=5)
+        if not slug:
+            slug = generate_random_string(length=5)
+        return slug
+    else:
+        return None
