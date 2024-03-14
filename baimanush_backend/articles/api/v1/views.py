@@ -9,12 +9,12 @@ from baimanush_backend.articles.api.v1.serializers import *
 class PostListViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
-    queryset = Post.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-created")
+    queryset = Post.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-publish")
     serializer_class = PostListSerializer
 
     def home_screen_content(self, request):
         try:
-            articles = self.queryset.filter(home_screen=True).order_by('-modified')[:8]
+            articles = self.queryset.filter(home_screen=True).order_by('-publish')[:8]
         except Post.DoesNotExist:
             articles = []
 

@@ -9,12 +9,12 @@ from baimanush_backend.videos.api.v1.serializers import *
 class VideoListViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
-    queryset = Video.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-created")
+    queryset = Video.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-publish")
     serializer_class = VideoListSerializer
 
     def list(self, request):
         try:
-            videos = self.queryset.order_by('-modified')
+            videos = self.queryset.order_by('-publish')
         except Video.DoesNotExist:
             videos = []
 
