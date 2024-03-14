@@ -29,6 +29,12 @@ class VideoListSerializer(serializers.ModelSerializer):
 
 
 class VideoDetailSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
     class Meta:
         model = Video
         fields = '__all__'
+
+    def get_category(self, obj):
+        if obj.category:
+            return obj.category.name
+        return ''

@@ -35,6 +35,12 @@ class PostListSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields = '__all__'
+    
+    def get_category(self, obj):
+        if obj.category:
+            return obj.category.name
+        return ''
