@@ -190,7 +190,6 @@ class ImageMixin(models.Model):
 
 
 class PostMixin(SlugMixin, ImageMixin, MetaTagMixin, StatusMixin, TimeStampedModel):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
     title = models.CharField(_("title"), max_length=255, null=False, blank=False, validators=[validator_ascii])
     short_description = models.TextField(_("short description"), max_length=500, blank=True,
                                          validators=[validator_ascii])

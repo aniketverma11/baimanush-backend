@@ -21,8 +21,8 @@ class Tag(models.Model):
 class Post(PostMixin, UserStampedMixin):
 	category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
 	minutes_read = models.PositiveIntegerField("Minutes Read", default=5, blank=False, null=False)
-	references = models.ManyToManyField(Reference)
-	sub_categories = models.ManyToManyField(SubCategory)
+	references = models.ManyToManyField(Reference, blank=True)
+	sub_categories = models.ManyToManyField(SubCategory, blank=True)
 	tags = models.ManyToManyField(Tag, blank=True)
 	author = models.CharField(_("Author"), max_length=50, blank=True)
 	is_for_members = models.BooleanField(_("Members Only"), default=False)

@@ -18,6 +18,10 @@ class PhotosResource(resources.ModelResource):
 class PhotosAdmin(ImportExportModelAdmin):
     inlines = [ImageInline]
     resource_class = PhotosResource
+    list_display = ('slug','title', 'short_description', 'publish', 'category', 'minutes_read', 'author', 'is_for_members', 'is_draft' ,'publish', "created", 'created_by')
+    list_filter = ('slug','category', 'is_for_members', 'is_draft')
+    search_fields = ('slug','title', 'author')
+    filter_horizontal = ('sub_categories',)
 
 
 admin.site.register(Photos, PhotosAdmin)

@@ -11,6 +11,10 @@ class VideoResource(resources.ModelResource):
 
 class VideoAdmin(ImportExportModelAdmin):
     resource_class = VideoResource
+    list_display = ('slug','title', 'short_description', 'publish', 'category', 'minutes_read', 'author', 'is_for_members', 'is_draft' ,'publish', "created", 'created_by')
+    list_filter = ('slug','category', 'is_for_members', 'is_draft')
+    search_fields = ('slug','title', 'author')
+    filter_horizontal = ('sub_categories', 'tags')
 
 
 admin.site.register(Video, VideoAdmin)
