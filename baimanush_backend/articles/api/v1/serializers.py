@@ -67,7 +67,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
-        read_more_data = Post.objects.filter(category__slug=obj.category.slug, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        read_more_data = Post.objects.filter(is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
         read_more_serializer = PostListSerializer(read_more_data, many=True)
         return read_more_serializer.data
     
