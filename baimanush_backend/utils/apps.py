@@ -8,6 +8,6 @@ class UtilsConfig(AppConfig):
 
     def ready(self):
         try:
-            import qrcodeverification.users.signals 
+            import qrcodeverification.users.signals
         except ImportError:
             pass

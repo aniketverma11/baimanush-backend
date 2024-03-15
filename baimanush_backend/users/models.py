@@ -3,11 +3,7 @@ from django.db.models import CharField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from utils.behaviours import (
-    UUIDMixin,
-    MobileMixin
-)
-
+from utils.behaviours import UUIDMixin, MobileMixin
 
 
 class User(AbstractUser, UUIDMixin, MobileMixin):

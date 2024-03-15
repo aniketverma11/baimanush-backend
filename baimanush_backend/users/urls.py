@@ -7,9 +7,8 @@ from baimanush_backend.users.api.views import (
     CreateProfileViewSet,
     RefreshTokenView,
     ForgotPasswordViewSet,
-    ForgotPasswordResetViewSet
+    ForgotPasswordResetViewSet,
 )
-
 
 
 from baimanush_backend.users.views import (

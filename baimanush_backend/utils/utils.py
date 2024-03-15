@@ -1,5 +1,6 @@
 # standard import
 import logging
+
 # from sib_api_v3_sdk.rest import ApiException
 # import sib_api_v3_sdk
 
@@ -15,7 +16,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from random import choice, SystemRandom
 from string import digits, ascii_uppercase, ascii_lowercase
 from rest_framework import status
-
 
 
 validator_ascii = RegexValidator(
@@ -116,6 +116,7 @@ def decrypt_string(string):
 def generate_response_dict(status="error", data={}, meta={}, message="no message"):
     return {"status": status, "message": message, "data": data, "meta": meta}
 
+
 def get_set_password_subject_message(id, frontend_redirect_url):
     subject = "Reset Your Password"
     # Construct the message with a link to set the password
@@ -132,7 +133,7 @@ def get_subscription_request_subject_message(id, frontend_redirect_url):
 
 def paginate(request, qs, nb):
     paginator = Paginator(qs, nb)  # Show nb objects per page
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     # page = 2
     try:
         objects = paginator.page(page)
@@ -149,7 +150,7 @@ def paginate(request, qs, nb):
     start_index = index - 3 if index >= 3 else 0
     end_index = index + 3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range)[start_index:end_index]
-    last_page_number = int(math.ceil(len(qs)/nb))
+    last_page_number = int(math.ceil(len(qs) / nb))
 
     return [objects, page_range, last_page_number]
 

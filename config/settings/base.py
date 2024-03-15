@@ -23,7 +23,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = "Asia/Kolkata"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#languages
@@ -90,8 +90,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "drf_spectacular",
     "import_export",
-    'ckeditor',
-    'ckeditor_uploader'
+    "ckeditor",
+    "ckeditor_uploader",
 ]
 
 LOCAL_APPS = [
@@ -342,7 +342,11 @@ REST_FRAMEWORK = {
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:4200", "http://127.0.0.1:4200"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:4200",
+    "http://127.0.0.1:4200",
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -362,40 +366,145 @@ SPECTACULAR_SETTINGS = {
 # ------------------------------------------------------------------------------
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar_YouCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-            {'name': 'forms', 'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
-            '/',
-            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']},
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-            '/',
-            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
-            {'name': 'youcustomtools', 'items': ['Preview', 'Maximize']},
+    "default": {
+        "toolbar_YouCustomToolbarConfig": [
+            {
+                "name": "document",
+                "items": [
+                    "Source",
+                    "-",
+                    "Save",
+                    "NewPage",
+                    "Preview",
+                    "Print",
+                    "-",
+                    "Templates",
+                ],
+            },
+            {
+                "name": "clipboard",
+                "items": [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "PasteFromWord",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ],
+            },
+            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            {
+                "name": "forms",
+                "items": [
+                    "Form",
+                    "Checkbox",
+                    "Radio",
+                    "TextField",
+                    "Textarea",
+                    "Select",
+                    "Button",
+                    "ImageButton",
+                    "HiddenField",
+                ],
+            },
+            "/",
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    "Subscript",
+                    "Superscript",
+                    "-",
+                    "RemoveFormat",
+                ],
+            },
+            {
+                "name": "paragraph",
+                "items": [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "Blockquote",
+                    "CreateDiv",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                    "-",
+                    "BidiLtr",
+                    "BidiRtl",
+                    "Language",
+                ],
+            },
+            {"name": "links", "items": ["Link", "Unlink", "Anchor"]},
+            {
+                "name": "insert",
+                "items": [
+                    "Image",
+                    "Flash",
+                    "Table",
+                    "HorizontalRule",
+                    "Smiley",
+                    "SpecialChar",
+                    "PageBreak",
+                    "Iframe",
+                ],
+            },
+            "/",
+            {"name": "styles", "items": ["Styles", "Format", "Font", "FontSize"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {"name": "tools", "items": ["Maximize", "ShowBlocks"]},
+            {"name": "about", "items": ["About"]},
+            "/",  # put this to force next toolbar on new line
+            {"name": "youcustomtools", "items": ["Preview", "Maximize"]},
         ],
-        'toolbar': 'YouCustomToolbarConfig',  # Corrected toolbar name
-        'toolbarGroups': [{'name': 'document', 'groups': ['mode', 'document', 'doctools']}],
-
-        'height': 600, 
-        'width': 600,  # Adjust the width as needed
-        'toolbarCanCollapse': True,
-        'mathJaxLib': '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',  # Updated MathJax CDN link
-        'tabSpaces': 4,
-        'extraPlugins': ','.join(['a11yhelp', 'about', 'autogrow', 'autolink', 'codesnippet', 'clipboard', 'dialog', 'embed', 'filetools', 'find', 'image2', 'link', 'notification', 'pastefromword', 'preview', 'showblocks', 'specialchar', 'table', 'uploadimage']),  # Reduced unnecessary plugins
+        "toolbar": "YouCustomToolbarConfig",  # Corrected toolbar name
+        "toolbarGroups": [
+            {"name": "document", "groups": ["mode", "document", "doctools"]}
+        ],
+        "height": 600,
+        "width": 600,  # Adjust the width as needed
+        "toolbarCanCollapse": True,
+        "mathJaxLib": "//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML",  # Updated MathJax CDN link
+        "tabSpaces": 4,
+        "extraPlugins": ",".join(
+            [
+                "a11yhelp",
+                "about",
+                "autogrow",
+                "autolink",
+                "codesnippet",
+                "clipboard",
+                "dialog",
+                "embed",
+                "filetools",
+                "find",
+                "image2",
+                "link",
+                "notification",
+                "pastefromword",
+                "preview",
+                "showblocks",
+                "specialchar",
+                "table",
+                "uploadimage",
+            ]
+        ),  # Reduced unnecessary plugins
     },
-    'allow_iframes': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Iframe'],
+    "allow_iframes": {
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            ["Iframe"],
         ],
-        'extraAllowedContent': 'iframe[src]',
-    }
+        "extraAllowedContent": "iframe[src]",
+    },
 }

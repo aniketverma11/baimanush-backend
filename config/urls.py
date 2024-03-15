@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include
-from django.urls import path,  re_path
+from django.urls import path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView
@@ -47,7 +47,7 @@ urlpatterns += [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r"^ckeditor/", include("ckeditor_uploader.urls")),
 ]
 
 if settings.DEBUG:

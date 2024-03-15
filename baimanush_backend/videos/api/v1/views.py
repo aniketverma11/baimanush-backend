@@ -6,15 +6,18 @@ from baimanush_backend.videos.models import Video
 from baimanush_backend.categories.models import Category, SubCategory
 from baimanush_backend.videos.api.v1.serializers import *
 
+
 class VideoListViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
-    queryset = Video.objects.filter(is_deleted=False, is_for_members=False, is_draft=False).order_by("-publish")
+    queryset = Video.objects.filter(
+        is_deleted=False, is_for_members=False, is_draft=False
+    ).order_by("-publish")
     serializer_class = VideoListSerializer
 
     def list(self, request):
         try:
-            videos = self.queryset.order_by('-publish')
+            videos = self.queryset.order_by("-publish")
         except Video.DoesNotExist:
             videos = []
 
@@ -27,10 +30,10 @@ class VideoListViewset(viewsets.ViewSet):
             data=serializer.data,
             meta={},
         )
-    
+
     def retrieve(self, request, *args, **kwargs):
-        slug = kwargs.get('slug')
-        
+        slug = kwargs.get("slug")
+
         article = self.queryset.filter(slug=slug).first()
 
         if article:

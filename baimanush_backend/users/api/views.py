@@ -42,12 +42,12 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
         serializer = UserSerializer(request.user, context={"request": request})
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
+
 class CreateProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = CreateUserProfileSerializer
 
     def create(self, request, *args, **kwargs):
-        
         serializer = CreateUserProfileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
@@ -79,7 +79,7 @@ class LoginViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
-        
+
         if serializer.is_valid(raise_exception=True):
             user_object = User.objects.get(email=serializer.data["email"])
             if user_object.is_active == False:

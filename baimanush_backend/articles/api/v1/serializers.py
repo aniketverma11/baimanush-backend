@@ -1,28 +1,33 @@
 from rest_framework import serializers
 from baimanush_backend.articles.models import Post, Tag, Reference
-from baimanush_backend.categories.api.v1.serializers import CategoryListSerializer, SubcategoryListSerializer
+from baimanush_backend.categories.api.v1.serializers import (
+    CategoryListSerializer,
+    SubcategoryListSerializer,
+)
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ["slug", "tag"]
 
+
 class ReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reference
         fields = ["slug", "title", "url"]
+
 
 class PostListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
 
-
     @staticmethod
     def setup_eager_loading(queryset):
-        """ Perform necessary eager loading of data. """
+        """Perform necessary eager loading of data."""
         # select_related for "to-one" relationships
-        queryset = queryset.select_related('category')
+        queryset = queryset.select_related("category")
         return queryset
 
     # def get_category(self, obj):
@@ -39,11 +44,21 @@ class PostListSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description
-        return ''
+        return ""
 
     class Meta:
         model = Post
-        fields = ('slug', 'short_description', 'title', 'image', 'image_alt', 'category', 'tags', 'created_by', "author")
+        fields = (
+            "slug",
+            "short_description",
+            "title",
+            "image",
+            "image_alt",
+            "category",
+            "tags",
+            "created_by",
+            "author",
+        )
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -51,8 +66,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
     references = ReferenceSerializer(many=True)
+
     class Meta:
         model = Post
-        fields = '__all__'
-    
-    
+        fields = "__all__"

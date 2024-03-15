@@ -11,7 +11,6 @@ from utils.utils import (
 from utils.utils import string_encrypt, decrypt_string
 
 
-
 User = get_user_model()
 
 
@@ -23,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer[UserType]):
         extra_kwargs = {
             "url": {"view_name": "api:user-detail", "lookup_field": "username"},
         }
+
 
 class CreateUserProfileSerializer(serializers.Serializer):
     first_name = serializers.CharField()
@@ -85,7 +85,7 @@ class UpdateUserProfileSerializer(serializers.Serializer):
         return data
 
 
-class   LoginSerializer(serializers.Serializer):
+class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
 
@@ -97,11 +97,11 @@ class   LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "User with this email {} not exists".format(data["email"])
             )
-        
+
         # Check if the provided password matches the user's password
         if user.check_password(data["password"]):
             return data
-        
+
         else:
             raise serializers.ValidationError("invalid password ")
 
@@ -116,7 +116,7 @@ class LoginResponseSerializer(serializers.Serializer):
         if profile["user_profile"]:
             # If user_type is 10 (organization), serialize using OrganizationProfileSerializer
             return UserProfileSerializer(profile["user_profile"]).data
-        
+
         else:
             return None
 
