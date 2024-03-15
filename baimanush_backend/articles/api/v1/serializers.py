@@ -30,17 +30,6 @@ class PostListSerializer(serializers.ModelSerializer):
         queryset = queryset.select_related("category")
         return queryset
 
-    # def get_category(self, obj):
-    #     if obj.category:
-    #         return obj.category.slug
-    #     return ''
-
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         request = self.context.get('request')
-    #         return request.build_absolute_uri(obj.image.url)
-    #     return ''
-
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description
@@ -59,6 +48,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "tags",
             "created_by",
             "author",
+            "publish",
         )
 
 
@@ -67,7 +57,53 @@ class PostDetailSerializer(serializers.ModelSerializer):
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
     references = ReferenceSerializer(many=True)
+    read_more = serializers.SerializerMethodField()
+    treanding_news = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = "__all__"
+    
+    def get_read_more(self, obj):
+        # Fetch additional data for "read_more" here
+        # Assuming read_more_data is a list of additional data
+        read_more_data = Post.objects.filter(category__slug=obj.category.slug, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        read_more_serializer = PostListSerializer(read_more_data, many=True)
+        return read_more_serializer.data
+    
+    def get_treanding_news(self, obj):
+        trending = Post.objects.filter(is_trending=True, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        trending_serializer = PostListSerializer(trending, many=True)
+        return trending_serializer.data
+
+class MemberOnlyListSerializer(serializers.ModelSerializer):
+    category = CategoryListSerializer()
+    short_description = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """Perform necessary eager loading of data."""
+        # select_related for "to-one" relationships
+        queryset = queryset.select_related("category")
+        return queryset
+
+    def get_short_description(self, obj):
+        if obj.short_description:
+            return obj.short_description
+        return ""
+
+    class Meta:
+        model = Post
+        fields = (
+            "slug",
+            "short_description",
+            "title",
+            "image",
+            "image_alt",
+            "category",
+            "tags",
+            "created_by",
+            "author",
+            "publish",
+        )

@@ -42,6 +42,7 @@ class VideoListSerializer(serializers.ModelSerializer):
             "category",
             "tags",
             "author",
+            "publish",
         )
 
 
@@ -49,7 +50,21 @@ class VideoDetailSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
+    read_more = serializers.SerializerMethodField()
+    treanding_news = serializers.SerializerMethodField()
 
     class Meta:
         model = Video
         fields = "__all__"
+
+    def get_read_more(self, obj):
+        # Fetch additional data for "read_more" here
+        # Assuming read_more_data is a list of additional data
+        read_more_data = Video.objects.filter(category__slug=obj.category.slug, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        read_more_serializer = VideoListSerializer(read_more_data, many=True)
+        return read_more_serializer.data
+    
+    def get_treanding_news(self, obj):
+        trending = Video.objects.filter(is_trending=True, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        trending_serializer = VideoListSerializer(trending, many=True)
+        return trending_serializer.data
