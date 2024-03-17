@@ -32,10 +32,12 @@ class PostListViewset(viewsets.ViewSet):
             data=serializer.data,
             meta={},
         )
-    
+
     def article_list_via_category(self, request, category):
         try:
-            articles = self.queryset.filter(category__slug=category).order_by("-publish")
+            articles = self.queryset.filter(category__slug=category).order_by(
+                "-publish"
+            )
         except Post.DoesNotExist:
             articles = []
 
@@ -48,10 +50,12 @@ class PostListViewset(viewsets.ViewSet):
             data=serializer.data,
             meta={},
         )
-    
+
     def is_member_only_posts(self, request):
         try:
-            articles = Post.objects.filter(is_deleted=False, is_for_members=True, is_draft=False).order_by("-publish")
+            articles = Post.objects.filter(
+                is_deleted=False, is_for_members=True, is_draft=False
+            ).order_by("-publish")
             print("-------------------", articles)
         except Post.DoesNotExist:
             articles = []
@@ -65,7 +69,7 @@ class PostListViewset(viewsets.ViewSet):
             data=serializer.data,
             meta={},
         )
-    
+
     def trending_posts(self, request):
         try:
             articles = self.queryset.filter(is_trending=True).order_by("-publish")[:8]
@@ -118,7 +122,7 @@ class PostDetailViewset(viewsets.ViewSet):
             data=serializer.data,
             meta={},
         )
-    
+
     def retrieve_by_slug(self, request, *args, **kwargs):
         slug = kwargs.get("slug")
 
@@ -155,7 +159,9 @@ class MemberPostDetailViewset(viewsets.ViewSet):
     serializer_class = PostDetailSerializer
 
     def member_only_post(self, request, slug):
-        article = Post.objects.filter(is_for_members=True, slug=slug, is_deleted=False, is_draft=False).first()
+        article = Post.objects.filter(
+            is_for_members=True, slug=slug, is_deleted=False, is_draft=False
+        ).first()
 
         if article:
 
@@ -171,5 +177,5 @@ class MemberPostDetailViewset(viewsets.ViewSet):
         else:
             return Response(
                 {"message": "Member-only post not found."},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )

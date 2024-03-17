@@ -60,11 +60,19 @@ class VideoDetailSerializer(serializers.ModelSerializer):
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
-        read_more_data = Video.objects.filter(is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        read_more_data = (
+            Video.objects.filter(is_deleted=False, is_draft=False)
+            .exclude(slug=obj.slug)
+            .order_by("-publish")[:4]
+        )  # Fetch read_more data as needed
         read_more_serializer = VideoListSerializer(read_more_data, many=True)
         return read_more_serializer.data
-    
+
     def get_treanding_news(self, obj):
-        trending = Video.objects.filter(is_trending=True, is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        trending = (
+            Video.objects.filter(is_trending=True, is_deleted=False, is_draft=False)
+            .exclude(slug=obj.slug)
+            .order_by("-publish")[:4]
+        )  # Fetch read_more data as needed
         trending_serializer = VideoListSerializer(trending, many=True)
         return trending_serializer.data

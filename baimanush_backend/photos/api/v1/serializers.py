@@ -12,6 +12,7 @@ class ImagesSerializer(serializers.ModelSerializer):
         model = Images
         fields = "__all__"
 
+
 class PhotoslistSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, source="images_set")
     category = CategoryListSerializer()
@@ -21,6 +22,7 @@ class PhotoslistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photos
         fields = "__all__"
+
 
 class PhotosDetailSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, source="images_set")
@@ -38,18 +40,23 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         if obj.category:
             return obj.category.name
         return ""
-    
+
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
-        read_more_data = Photos.objects.filter(is_deleted=False, is_draft=False).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        read_more_data = (
+            Photos.objects.filter(is_deleted=False, is_draft=False)
+            .exclude(slug=obj.slug)
+            .order_by("-publish")[:4]
+        )  # Fetch read_more data as needed
         read_more_serializer = PhotoslistSerializer(read_more_data, many=True)
         return read_more_serializer.data
-    
+
     def get_treanding_news(self, obj):
-        trending = Photos.objects.filter(is_trending=True).exclude(slug=obj.slug).order_by("-publish")[:4]  # Fetch read_more data as needed
+        trending = (
+            Photos.objects.filter(is_trending=True)
+            .exclude(slug=obj.slug)
+            .order_by("-publish")[:4]
+        )  # Fetch read_more data as needed
         trending_serializer = PhotoslistSerializer(trending, many=True)
         return trending_serializer.data
-
-
-

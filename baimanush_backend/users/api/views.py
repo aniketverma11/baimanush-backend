@@ -63,7 +63,6 @@ class CreateProfileViewSet(viewsets.ModelViewSet):
 
 
 class LoginViewSet(viewsets.ModelViewSet):
-
     """
     This viewset is used for Login
 
@@ -114,7 +113,6 @@ class LoginViewSet(viewsets.ModelViewSet):
 
 
 class ForgotPasswordViewSet(viewsets.ModelViewSet):
-
     """
     This viewset is used for Login
 
@@ -153,7 +151,6 @@ class ForgotPasswordViewSet(viewsets.ModelViewSet):
 
 
 class ForgotPasswordResetViewSet(viewsets.ModelViewSet):
-
     """
     This viewset is used for Login
 
@@ -191,7 +188,6 @@ class ForgotPasswordResetViewSet(viewsets.ModelViewSet):
 
 
 class LogoutallViewSet(viewsets.ViewSet):
-
     """
     This viewset is used for Logout from all devices
 
