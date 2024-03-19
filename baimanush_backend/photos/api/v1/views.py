@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from baimanush_backend.utils.response import cached_response
 
-from baimanush_backend.photos.models import Photos, Images
+from baimanush_backend.photos.models import Photos, Photos_Images
 from .serializers import PhotosDetailSerializer, ImagesSerializer, PhotoslistSerializer
 
 

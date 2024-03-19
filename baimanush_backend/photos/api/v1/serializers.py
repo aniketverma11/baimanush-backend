@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.photos.models import Photos, Images
+from baimanush_backend.photos.models import Photos, Photos_Images
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -9,7 +9,7 @@ from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
 class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Images
+        model = Photos_Images
         fields = "__all__"
 
 
