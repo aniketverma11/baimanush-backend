@@ -9,7 +9,7 @@ from baimanush_backend.articles.models import Tag
 
 
 # Create your models here
-class Photos(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
+class Photos(SlugMixin, StatusMixin,ImageMixin, TimeStampedModel, UserStampedMixin):
     title = models.CharField(_("title"), max_length=255, null=False, blank=False)
     short_description = models.TextField(
         _("short description"), max_length=500, blank=True
@@ -29,6 +29,7 @@ class Photos(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     is_for_members = models.BooleanField(_("Members Only"), default=False)
     is_draft = models.BooleanField(_("Draft"), default=True)
     is_trending = models.BooleanField(_("Trending"), default=True)
+    views_count = models.PositiveIntegerField(_("Views Count"), default=0, blank=True)
 
     def __str__(self):
         return str(self.title)
@@ -38,8 +39,8 @@ class Photos(SlugMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
         verbose_name_plural = "Photos"
 
 
-class Images(ImageMixin, StatusMixin, TimeStampedModel):
-    photo = models.ForeignKey(Photos, on_delete=models.CASCADE)
+class Photos_Images(ImageMixin, StatusMixin, TimeStampedModel):
+    photo = models.ForeignKey(Photos, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "Image"
