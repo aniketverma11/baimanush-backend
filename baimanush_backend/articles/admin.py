@@ -3,16 +3,46 @@ from baimanush_backend.articles.models import Post, Reference, SubscribeMail, Ta
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
+from django.utils.html import format_html
 
 class PostResource(resources.ModelResource):
     class Meta:
         model = Post
 
 
-class PostAdmin(ImportExportModelAdmin):
+class PostAdmin(admin.ModelAdmin):
+    def get_image(self, obj):
+        return format_html('<img src="{}" style="max-height: 500px; max-width: 500px;" />', obj.image.url) if obj.image else None
+
+    
+    get_image.short_description = 'Post Image'
+
+    fieldsets = (
+        ('Post Details', {
+            'fields': ('slug', 'title', 'category', 'minutes_read', 'author', 'publish')
+        }),
+        ('Content', {
+            'fields': ('short_description', 'content')
+        }),
+        ('Image', {
+            'fields': ('image', 'image_alt', "get_image")
+        }),
+        ('Meta Information', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords')
+        }),
+        ('Status', {
+            'fields': ('is_for_members', 'home_screen', 'is_draft', 'is_trending', 'is_active', 'is_deleted')
+        }),
+        ('Tracking', {
+            'fields': ('views_count', 'created_by', 'modified_by')
+        }),
+    )
+    
+    readonly_fields = ('get_image',)
     resource_class = PostResource
     list_display = (
         "slug",
+        "get_image",
         "title",
         "category",
         "minutes_read",
