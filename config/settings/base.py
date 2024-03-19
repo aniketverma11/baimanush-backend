@@ -508,3 +508,5 @@ CKEDITOR_CONFIGS = {
         "extraAllowedContent": "iframe[src]",
     },
 }
+
+SILKY_PYTHON_PROFILER = True
