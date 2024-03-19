@@ -24,13 +24,13 @@ class Video(SlugMixin, ImageMixin, StatusMixin, TimeStampedModel, UserStampedMix
     minutes_read = models.PositiveIntegerField(
         "Minutes Read", default=5, blank=False, null=False
     )
-    sub_categories = models.ManyToManyField(SubCategory, blank=True)
     author = models.CharField(_("Author"), max_length=50, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     home_screen = models.BooleanField(_("Breaking News"), default=False)
     is_for_members = models.BooleanField(_("Members Only"), default=False)
     is_draft = models.BooleanField(_("Draft"), default=True)
     is_trending = models.BooleanField(_("Trending"), default=True)
+    views_count = models.PositiveIntegerField(_("Views Count"), default=0, blank=True)
 
     def __str__(self):
         return str(self.title)
