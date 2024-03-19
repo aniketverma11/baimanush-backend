@@ -16,7 +16,7 @@ class PhotosResource(resources.ModelResource):
         model = Photos
 
 
-class PhotosAdmin(ImportExportModelAdmin):
+class PhotosAdmin(admin.ModelAdmin):
     inlines = [ImageInline]
     resource_class = PhotosResource
     list_display = (

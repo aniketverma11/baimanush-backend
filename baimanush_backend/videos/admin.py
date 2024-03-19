@@ -10,7 +10,7 @@ class VideoResource(resources.ModelResource):
         model = Video
 
 
-class VideoAdmin(ImportExportModelAdmin):
+class VideoAdmin(admin.ModelAdmin):
     resource_class = VideoResource
     list_display = (
         "slug",
