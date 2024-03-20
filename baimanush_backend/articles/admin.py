@@ -19,7 +19,7 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Post Details', {
-            'fields': ('slug', 'title', 'category', 'minutes_read', 'author', 'publish')
+            'fields': ('slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
         }),
         ('Content', {
             'fields': ('short_description', 'content')

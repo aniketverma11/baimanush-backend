@@ -21,7 +21,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Post Details', {
-            'fields': ('slug', 'title', 'category', 'minutes_read', 'author', 'publish')
+            'fields': ('slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
         }),
         ('Content', {
             'fields': ('video', 'short_description', 'content')
