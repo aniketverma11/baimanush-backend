@@ -12,7 +12,7 @@ class PostResource(resources.ModelResource):
 
 class PostAdmin(admin.ModelAdmin):
     def get_image(self, obj):
-        return format_html('<img src="{}" style="max-height: 500px; max-width: 500px;" />', obj.image.url) if obj.image else None
+        return format_html('<img src="{}" style="max-height: 300px; max-width: 300px;" />', obj.image.url) if obj.image else None
 
     
     get_image.short_description = 'Post Image'
