@@ -47,7 +47,6 @@ class VideoListSerializer(serializers.ModelSerializer):
 
 class VideoDetailSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
-    sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
