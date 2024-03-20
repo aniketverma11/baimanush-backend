@@ -33,9 +33,9 @@ class PostListViewset(viewsets.ViewSet):
             meta={},
         )
 
-    def article_list_via_category(self, request, category):
+    def article_list_via_category(self, request, category_slug):
         try:
-            articles = self.queryset.filter(category__slug=category).order_by(
+            articles = self.queryset.filter(category__slug=category_slug).order_by(
                 "-publish"
             )
         except Post.DoesNotExist:

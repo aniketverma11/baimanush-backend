@@ -28,7 +28,7 @@ class PhotosViewSet(viewsets.ViewSet):
         )
 
     def get(self, request, slug):
-        photo = self.queryset.prefetch_related("images_set").filter(slug=slug).first()
+        photo = self.queryset.prefetch_related("photos_images_set").filter(slug=slug).first()
         serializer = PhotosDetailSerializer(photo)
 
         return cached_response(

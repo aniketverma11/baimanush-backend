@@ -14,7 +14,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class PhotoslistSerializer(serializers.ModelSerializer):
-    images = ImagesSerializer(many=True, source="images_set")
+    images = ImagesSerializer(many=True, source="photos_images_set")
     category = CategoryListSerializer()
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
@@ -25,7 +25,7 @@ class PhotoslistSerializer(serializers.ModelSerializer):
 
 
 class PhotosDetailSerializer(serializers.ModelSerializer):
-    images = ImagesSerializer(many=True, source="images_set")
+    images = ImagesSerializer(many=True, source="photos_images_set")
     category = CategoryListSerializer()
     sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
