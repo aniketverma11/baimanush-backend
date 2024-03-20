@@ -34,7 +34,6 @@ class VideoListSerializer(serializers.ModelSerializer):
         model = Video
         fields = (
             "slug",
-            "short_description",
             "title",
             "content",
             "image",
