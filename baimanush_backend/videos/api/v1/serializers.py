@@ -10,7 +10,6 @@ from baimanush_backend.articles.api.v1.serializers import TagSerializer
 class VideoListSerializer(serializers.ModelSerializer):
     short_description = serializers.SerializerMethodField()
     category = CategoryListSerializer()
-    sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
 
     @staticmethod
