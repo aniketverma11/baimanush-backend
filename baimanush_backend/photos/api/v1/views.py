@@ -16,26 +16,47 @@ class PhotosViewSet(viewsets.ViewSet):
     serializer_class = PhotoslistSerializer
 
     def list(self, request):
-        serializer = PhotoslistSerializer(self.queryset, many=True)
+        type = request.GET.get("type")
+        if type:
+            photos = self.queryset.filter(type=type)
+            serializer = PhotoslistSerializer(photos, many=True)
 
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )
 
     def get(self, request, slug):
-        photo = self.queryset.prefetch_related("photos_images_set").filter(slug=slug).first()
-        serializer = PhotosDetailSerializer(photo)
+        type = request.GET.get("type")
+        if type:
+            photo = self.queryset.prefetch_related("photos_images_set").filter(slug=slug).first()
+            serializer = PhotosDetailSerializer(photo)
 
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )

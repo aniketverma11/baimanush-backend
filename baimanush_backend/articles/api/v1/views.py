@@ -48,7 +48,7 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(category__slug=category_slug).order_by(
+                articles = self.queryset.filter(category__slug=category_slug, type=type).order_by(
                     "-publish"
                 )[:4]
             except Post.DoesNotExist:
@@ -77,7 +77,7 @@ class PostListViewset(viewsets.ViewSet):
         if type:
             try:
                 articles = Post.objects.filter(
-                    is_deleted=False, is_for_members=True, is_draft=False
+                    is_deleted=False, is_for_members=True, is_draft=False, type=type
                 ).order_by("-publish")
                 print("-------------------", articles)
             except Post.DoesNotExist:
@@ -103,18 +103,28 @@ class PostListViewset(viewsets.ViewSet):
         )
 
     def trending_posts(self, request):
-        try:
-            articles = self.queryset.filter(is_trending=True).order_by("-publish")[:8]
-        except Post.DoesNotExist:
-            articles = []
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(is_trending=True, type=type).order_by("-publish")[:8]
+            except Post.DoesNotExist:
+                articles = []
 
-        serializer = self.serializer_class(articles, many=True)
+            serializer = self.serializer_class(articles, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )
 
@@ -133,7 +143,7 @@ class PostDetailViewset(viewsets.ViewSet):
             category_slug = kwargs.get("category_slug")
             slug = kwargs.get("slug")
 
-            article = self.queryset.filter(category__slug=category_slug, slug=slug).first()
+            article = self.queryset.filter(category__slug=category_slug, slug=slug, type=type).first()
 
             if article:
                 serializer = PostDetailSerializer(article)
@@ -146,7 +156,7 @@ class PostDetailViewset(viewsets.ViewSet):
                     meta={},
                 )
 
-            article = self.queryset.filter(slug=slug).first()
+            article = self.queryset.filter(slug=slug, type=type).first()
             serializer = PostDetailSerializer(article)
             return cached_response(
                 request=request,
@@ -170,7 +180,7 @@ class PostDetailViewset(viewsets.ViewSet):
         if type:
             slug = kwargs.get("slug")
 
-            article = self.queryset.filter(slug=slug).first()
+            article = self.queryset.filter(slug=slug, type=type).first()
 
             if article:
                 serializer = PostDetailSerializer(article)
@@ -183,7 +193,7 @@ class PostDetailViewset(viewsets.ViewSet):
                     meta={},
                 )
 
-            article = self.queryset.filter(slug=slug).first()
+            article = self.queryset.filter(slug=slug, type=type).first()
             serializer = PostDetailSerializer(article)
             return cached_response(
                 request=request,
