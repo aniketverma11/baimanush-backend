@@ -22,7 +22,7 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
         }),
         ('Content', {
-            'fields': ('short_description', 'content')
+            'fields': ('short_description', 'content', 'audio')
         }),
         ('Image', {
             'fields': ('image', 'image_alt', "get_image")

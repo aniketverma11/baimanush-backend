@@ -1,9 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
+
+def validate_audio_file(value):
+    if not value.name.endswith(('.mp3', '.wav', '.ogg', '.flac', '.aac', '.wma')):
+        raise ValidationError("Only MP3, WAV, OGG, FLAC, AAC, and WMA files are allowed.")
 
 
 class Reference(SlugMixin, StatusMixin, TimeStampedModel):
@@ -24,6 +29,7 @@ class Tag(SlugMixin, StatusMixin, TimeStampedModel):
 
 
 class Post(PostMixin, UserStampedMixin):
+    audio = models.FileField(upload_to=upload_location, validators=[validate_audio_file], blank=True, null=True)
     category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
     minutes_read = models.PositiveIntegerField(
         "Minutes Read", default=5, blank=False, null=False
