@@ -208,10 +208,9 @@ class PostMixin(SlugMixin, ImageMixin, MetaTagMixin, StatusMixin, TimeStampedMod
         max_length=255,
         null=False,
         blank=False,
-        validators=[validator_ascii],
     )
     short_description = models.TextField(
-        _("short description"), max_length=500, blank=True, validators=[validator_ascii]
+        _("short description"), max_length=500, blank=True
     )
     content = RichTextUploadingField(_("content"), blank=True, null=True)
     # tag = models.CharField(_("tag"), max_length=255, null=True, blank=True, validators=[validator_ascii])
