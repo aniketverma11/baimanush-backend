@@ -18,55 +18,87 @@ class PostListViewset(viewsets.ViewSet):
     serializer_class = PostListSerializer
 
     def home_screen_content(self, request):
-        try:
-            articles = self.queryset.filter(home_screen=True).order_by("-publish")[:8]
-        except Post.DoesNotExist:
-            articles = []
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(home_screen=True, type=type).order_by("-publish")[:8]
+            except Post.DoesNotExist:
+                articles = []
 
-        serializer = self.serializer_class(articles, many=True)
-        return cached_response(
-            request=request,
-            status=status.HTTP_200_OK,
-            response_status="success",
-            message="",
-            data=serializer.data,
-            meta={},
-        )
-
-    def article_list_via_category(self, request, category_slug):
-        try:
-            articles = self.queryset.filter(category__slug=category_slug).order_by(
-                "-publish"
+            serializer = self.serializer_class(articles, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
             )
-        except Post.DoesNotExist:
-            articles = []
 
-        serializer = self.serializer_class(articles, many=True)
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )
+    
+    def article_list_via_category(self, request, category_slug):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(category__slug=category_slug).order_by(
+                    "-publish"
+                )[:4]
+            except Post.DoesNotExist:
+                articles = []
 
-    def is_member_only_posts(self, request):
-        try:
-            articles = Post.objects.filter(
-                is_deleted=False, is_for_members=True, is_draft=False
-            ).order_by("-publish")
-            print("-------------------", articles)
-        except Post.DoesNotExist:
-            articles = []
+            serializer = self.serializer_class(articles, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
 
-        serializer = MemberOnlyListSerializer(articles, many=True)
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
+            meta={},
+        )
+    def is_member_only_posts(self, request):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = Post.objects.filter(
+                    is_deleted=False, is_for_members=True, is_draft=False
+                ).order_by("-publish")
+                print("-------------------", articles)
+            except Post.DoesNotExist:
+                articles = []
+
+            serializer = MemberOnlyListSerializer(articles, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+        
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="success",
+            message="Type is required",
+            data={},
             meta={},
         )
 
@@ -96,12 +128,25 @@ class PostDetailViewset(viewsets.ViewSet):
     serializer_class = PostDetailSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        category_slug = kwargs.get("category_slug")
-        slug = kwargs.get("slug")
+        type = request.GET.get("type")
+        if type:
+            category_slug = kwargs.get("category_slug")
+            slug = kwargs.get("slug")
 
-        article = self.queryset.filter(category__slug=category_slug, slug=slug).first()
+            article = self.queryset.filter(category__slug=category_slug, slug=slug).first()
 
-        if article:
+            if article:
+                serializer = PostDetailSerializer(article)
+                return cached_response(
+                    request=request,
+                    status=status.HTTP_200_OK,
+                    response_status="success",
+                    message="",
+                    data=serializer.data,
+                    meta={},
+                )
+
+            article = self.queryset.filter(slug=slug).first()
             serializer = PostDetailSerializer(article)
             return cached_response(
                 request=request,
@@ -111,24 +156,34 @@ class PostDetailViewset(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
-
-        article = self.queryset.filter(slug=slug).first()
-        serializer = PostDetailSerializer(article)
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )
 
     def retrieve_by_slug(self, request, *args, **kwargs):
-        slug = kwargs.get("slug")
+        type = request.GET.get("type")
+        if type:
+            slug = kwargs.get("slug")
 
-        article = self.queryset.filter(slug=slug).first()
+            article = self.queryset.filter(slug=slug).first()
 
-        if article:
+            if article:
+                serializer = PostDetailSerializer(article)
+                return cached_response(
+                    request=request,
+                    status=status.HTTP_200_OK,
+                    response_status="success",
+                    message="",
+                    data=serializer.data,
+                    meta={},
+                )
+
+            article = self.queryset.filter(slug=slug).first()
             serializer = PostDetailSerializer(article)
             return cached_response(
                 request=request,
@@ -138,15 +193,12 @@ class PostDetailViewset(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
-
-        article = self.queryset.filter(slug=slug).first()
-        serializer = PostDetailSerializer(article)
         return cached_response(
             request=request,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="",
-            data=serializer.data,
+            message="Type is required",
+            data={},
             meta={},
         )
 
