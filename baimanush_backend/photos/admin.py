@@ -25,7 +25,7 @@ class PhotosAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Post Details', {
-            'fields': ('slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
+            'fields': ('type','slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
         }),
         ('Content', {
             'fields': ('short_description', 'content')
@@ -59,7 +59,7 @@ class PhotosAdmin(admin.ModelAdmin):
         "created",
         "created_by",
     )
-    list_filter = ("slug", "category", "is_for_members", "is_draft")
+    list_filter = ('type',"slug", "category", "is_for_members", "is_draft")
     search_fields = ("slug", "title", "author")
     filter_horizontal = ("sub_categories", "tags")
 

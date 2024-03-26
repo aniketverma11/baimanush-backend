@@ -10,6 +10,13 @@ from baimanush_backend.articles.models import Tag
 
 # Create your models here
 class Photos(SlugMixin, StatusMixin,ImageMixin, TimeStampedModel, UserStampedMixin):
+    POST_CHOICES = (
+        ('english', 'English'),
+        ('marathi', 'Marathi'),
+        ('dhariti', 'Dhariti'),
+    )
+    
+    type = models.CharField(max_length=20, choices=POST_CHOICES)
     title = models.CharField(_("title"), max_length=255, null=False, blank=False)
     short_description = models.TextField(
         _("short description"), max_length=500, blank=True
