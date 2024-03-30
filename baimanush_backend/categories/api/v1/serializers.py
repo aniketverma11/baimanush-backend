@@ -9,7 +9,6 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    subcategories = SubCategorySerializer(many=True, source="subcategory_set")
 
     class Meta:
         model = Category
