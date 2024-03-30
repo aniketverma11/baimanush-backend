@@ -72,6 +72,36 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
+    
+    def all_article_list_via_category(self, request, category_slug):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(category__slug=category_slug, type=type).order_by(
+                    "-publish"
+                )
+            except Post.DoesNotExist:
+                articles = []
+
+            serializer = self.serializer_class(articles, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="success",
+            message="Type is required",
+            data={},
+            meta={},
+        )
+    
     def is_member_only_posts(self, request):
         type = request.GET.get("type")
         if type:

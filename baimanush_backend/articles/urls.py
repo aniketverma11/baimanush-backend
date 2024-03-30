@@ -20,6 +20,7 @@ urlpatterns = [
     path(
         "<str:category_slug>/<str:slug>",
         views.PostDetailViewset.as_view({"get": "retrieve"}),
+    path("category-articles/<slug:category_slug>", views.PostListViewset.as_view({"get":"all_article_list_via_category"})),
     ),
     path(
         "members-only/", views.PostListViewset.as_view({"get": "is_member_only_posts"})
