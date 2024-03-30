@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.photos.models import Photos, Photos_Images
+from baimanush_backend.photos.models import Photos, Photos_Images,PhotoComments
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -60,3 +60,8 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         )  # Fetch read_more data as needed
         trending_serializer = PhotoslistSerializer(trending, many=True)
         return trending_serializer.data
+
+class PhotosCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhotoComments
+        fields = '__all__'

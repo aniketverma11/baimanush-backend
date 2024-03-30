@@ -308,3 +308,45 @@ class MemberPostDetailViewset(viewsets.ViewSet):
                 {"message": "Member-only post not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+
+
+class PostCommentsViewset(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostCommentSerializer
+
+    def create(self, request, post_slug):
+        data = request.data
+        user = request.user
+
+        serializer = self.serializer_class(data)
+
+        if serializer.is_valid(raise_exception=True):
+            content = serializer.data["content"]
+        
+        try:
+            post = Post.objects.get(slug=post_slug)
+            comment = PostComments.objects.create(
+                user=user,
+                post=post,
+                content=content
+            )
+        except Exception:
+            return cached_response(
+                request=request,
+                status=status.HTTP_400_BAD_REQUEST,
+                response_status="Failed",
+                message="",
+                data={},
+                meta={},
+            )
+        
+        return cached_response(
+            request=request,
+            status=status.HTTP_201_CREATED,
+            response_status="success",
+            message="comment post successfully",
+            data=serializer.data,
+            meta={},
+        )

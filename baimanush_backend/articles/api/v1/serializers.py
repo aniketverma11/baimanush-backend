@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.articles.models import Post, Tag, Reference
+from baimanush_backend.articles.models import Post, Tag, Reference, PostComments
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -124,3 +124,9 @@ class CategoryArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+
+
+class PostCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostComments
+        fields = '__all__'

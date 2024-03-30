@@ -52,3 +52,11 @@ class Photos_Images(ImageMixin, StatusMixin, TimeStampedModel):
     class Meta:
         verbose_name = "Image"
         verbose_name_plural = "Images"
+
+
+class PhotoComments(SlugMixin, UserStampedMixin, CommentMixin):
+    photo = models.ForeignKey(Photos, on_delete=models.CASCADE, blank=True)
+
+    class Meta:
+        verbose_name="Photos Comment"
+        verbose_name_plural = "Photos Comments"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.videos.models import Video
+from baimanush_backend.videos.models import Video, VideoComments
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -74,3 +74,9 @@ class VideoDetailSerializer(serializers.ModelSerializer):
         )  # Fetch read_more data as needed
         trending_serializer = VideoListSerializer(trending, many=True)
         return trending_serializer.data
+
+
+class VideosCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoComments
+        fields = '__all__'
