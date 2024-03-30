@@ -107,6 +107,9 @@ class PostListViewset(viewsets.ViewSet):
             meta={},
         )
     
+
+
+    
     def is_member_only_posts(self, request):
         type = request.GET.get("type")
         if type:
@@ -162,7 +165,36 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
+    
 
+    def search_articles(self,request):
+        type = request.GET.get("type")
+        query = request.GET.get("q")
+        if type:
+
+            try:
+                posts = self.queryset.filter(type=type, title__icontains=query).order_by("-publish")
+            except Exception:
+                posts = self.queryset.filter(type=type).order_by("-publish")[:20]
+
+            serializer = self.serializer_class(posts, many=True)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={}
+            )
+
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="success",
+            message="Type is required",
+            data={},
+            meta={},
+        )
 
 class PostDetailViewset(viewsets.ViewSet):
     permission_classes = []
