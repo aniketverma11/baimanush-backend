@@ -9,7 +9,7 @@ urlpatterns = [
     ),
     path("category-articles/<slug:category_slug>", views.PostListViewset.as_view({"get":"all_article_list_via_category"})),
     path(
-        "category-post/<slug:category_slug>",
+        "category-post/",
         views.PostListViewset.as_view({"get": "article_list_via_category"}),
     ),
     path(

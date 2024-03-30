@@ -8,7 +8,6 @@ from baimanush_backend.articles.models import Post, SubscribeMail, Reference
 from baimanush_backend.categories.models import Category, SubCategory
 from baimanush_backend.articles.api.v1.serializers import *
 
-
 class PostListViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
@@ -44,23 +43,29 @@ class PostListViewset(viewsets.ViewSet):
             meta={},
         )
     
-    def article_list_via_category(self, request, category_slug):
+    def article_list_via_category(self, request):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(category__slug=category_slug, type=type).order_by(
-                    "-publish"
-                )[:4]
-            except Post.DoesNotExist:
-                articles = []
+                categories = Category.objects.prefetch_related("post_set").all()    
+            except Category.DoesNotExist:
+                categories = []
 
-            serializer = self.serializer_class(articles, many=True)
+            articles = []
+            for category in categories:
+                category_data = CategoryArticlesSerializer(category, context={"request": request}).data
+                if type:
+                    filtered_posts = category.post_set.filter(type=type).order_by("-publish")[:4]
+                else:
+                    filtered_posts = category.post_set.all().order_by("-publish")[:4]
+                category_data['posts'] = PostListSerializer(filtered_posts, many=True, context={"request": request}).data
+                articles.append(category_data)
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
                 response_status="success",
                 message="",
-                data=serializer.data,
+                data=articles,
                 meta={},
             )
 

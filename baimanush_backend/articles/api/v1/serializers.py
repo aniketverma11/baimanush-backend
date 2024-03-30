@@ -5,6 +5,8 @@ from baimanush_backend.categories.api.v1.serializers import (
     SubcategoryListSerializer,
 )
 
+from baimanush_backend.categories.models import Category
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -116,3 +118,10 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
+
+class CategoryArticlesSerializer(serializers.ModelSerializer):
+    posts = PostListSerializer(many=True, source="post_set")
+
+    class Meta:
+        model = Category
+        fields = "__all__"
