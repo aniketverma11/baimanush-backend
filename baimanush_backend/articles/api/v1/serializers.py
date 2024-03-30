@@ -43,7 +43,6 @@ class PostListSerializer(serializers.ModelSerializer):
             "slug",
             "short_description",
             "title",
-            "content",
             "image",
             "image_alt",
             "category",
