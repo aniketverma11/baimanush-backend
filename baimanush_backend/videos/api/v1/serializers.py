@@ -37,7 +37,7 @@ class VideoListSerializer(serializers.ModelSerializer):
             "short_description",
             "content",
             "image",
-            "image_alt",
+            "image_description",
             "category",
             "tags",
             "author",
