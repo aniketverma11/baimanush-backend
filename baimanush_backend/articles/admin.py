@@ -25,7 +25,7 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('short_description', 'content', 'audio')
         }),
         ('Image', {
-            'fields': ('image', 'image_alt', "get_image")
+            'fields': ('image', 'image_description', "get_image")
         }),
         ('Meta Information', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords')

@@ -27,7 +27,7 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('video', 'short_description', 'content')
         }),
         ('Image', {
-            'fields': ('image', 'image_alt', "get_image")
+            'fields': ('image', 'image_description', "get_image")
         }),
         ('Status', {
             'fields': ('is_for_members', 'home_screen', 'is_draft', 'is_trending', 'is_active', 'is_deleted')
