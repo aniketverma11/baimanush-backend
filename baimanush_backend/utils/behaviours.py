@@ -194,8 +194,8 @@ class ImageMixin(models.Model):
     image = models.ImageField(
         _("image"), upload_to=upload_location, null=False, blank=False
     )
-    image_description = models.CharField(
-        _("Image Description"), max_length=100, blank=True, validators=[validator_ascii]
+    image_description = models.TextField(
+        _("Image Description"), max_length=500, blank=True
     )
 
     class Meta:
