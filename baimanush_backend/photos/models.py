@@ -9,7 +9,7 @@ from baimanush_backend.articles.models import Tag
 
 
 # Create your models here
-class Photos(SlugMixin, StatusMixin,ImageMixin, TimeStampedModel, UserStampedMixin):
+class Photos(SlugMixin, StatusMixin, ImageMixin, TimeStampedModel, UserStampedMixin):
     POST_CHOICES = (
         ('english', 'English'),
         ('marathi', 'Marathi'),
