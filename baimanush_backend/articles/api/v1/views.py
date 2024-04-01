@@ -224,13 +224,22 @@ class PostDetailViewset(viewsets.ViewSet):
                 )
 
             article = self.queryset.filter(slug=slug, type=type).first()
-            serializer = PostDetailSerializer(article)
+            if article:
+                serializer = PostDetailSerializer(article)
+                return cached_response(
+                    request=request,
+                    status=status.HTTP_200_OK,
+                    response_status="success",
+                    message="",
+                    data=serializer.data,
+                    meta={},
+                )
             return cached_response(
                 request=request,
-                status=status.HTTP_200_OK,
+                status=status.HTTP_400_BAD_REQUEST,
                 response_status="success",
-                message="",
-                data=serializer.data,
+                message="Post not found with this category",
+                data={},
                 meta={},
             )
         return cached_response(
