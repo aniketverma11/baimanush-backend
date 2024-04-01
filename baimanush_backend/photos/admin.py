@@ -45,6 +45,7 @@ class PhotosAdmin(admin.ModelAdmin):
     resource_class = PhotosResource
     list_display = (
         "slug",
+        "type",
         "title",
         "short_description",
         "publish",

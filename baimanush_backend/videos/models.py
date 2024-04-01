@@ -17,7 +17,7 @@ class Video(SlugMixin, ImageMixin, StatusMixin, TimeStampedModel, UserStampedMix
         ('dhariti', 'Dhariti'),
     )
     
-    type = models.CharField(max_length=20, choices=POST_CHOICES)
+    type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
     video = RichTextField(config_name="allow_iframes")
     title = models.CharField(_("title"), max_length=255, null=False, blank=False)
     short_description = models.TextField(

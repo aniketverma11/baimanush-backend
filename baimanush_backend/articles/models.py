@@ -35,7 +35,7 @@ class Post(PostMixin, UserStampedMixin):
         ('dhariti', 'Dhariti'),
     )
     
-    type = models.CharField(max_length=20, choices=POST_CHOICES)
+    type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
     audio = models.FileField(upload_to=upload_location, validators=[validate_audio_file], blank=True, null=True)
     category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
     minutes_read = models.PositiveIntegerField(

@@ -40,6 +40,7 @@ class VideoAdmin(admin.ModelAdmin):
     resource_class = VideoResource
     list_display = (
         "slug",
+        "type",
         "title",
         "short_description",
         "publish",

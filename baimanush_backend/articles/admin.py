@@ -42,6 +42,7 @@ class PostAdmin(admin.ModelAdmin):
     resource_class = PostResource
     list_display = (
         "slug",
+        "type",
         "get_image",
         "title",
         "category",
