@@ -23,6 +23,7 @@ class ReferenceSerializer(serializers.ModelSerializer):
 class PostListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
 
     @staticmethod
@@ -35,6 +36,11 @@ class PostListSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description[:200] + '...'
+        return ""
+    
+    def get_content(self, obj):
+        if obj.short_description:
+            return obj.short_description[:500] + '...'
         return ""
 
     class Meta:
