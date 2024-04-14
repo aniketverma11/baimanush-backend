@@ -15,19 +15,23 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 class PhotoslistSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, source="photos_images_set")
+    short_description = serializers.SerializerMethodField()
     category = CategoryListSerializer()
-    sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
+
+    def get_short_description(self, obj):
+        if obj.short_description:
+            return obj.short_description[:200] + '...'
+        return ""
 
     class Meta:
         model = Photos
         fields = "__all__"
 
-
+    
 class PhotosDetailSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, source="photos_images_set")
     category = CategoryListSerializer()
-    sub_categories = SubcategoryListSerializer(many=True)
     tags = TagSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
