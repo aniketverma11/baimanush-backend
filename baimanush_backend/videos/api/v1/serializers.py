@@ -9,6 +9,7 @@ from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
 class VideoListSerializer(serializers.ModelSerializer):
     short_description = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     tags = TagSerializer(many=True)
 
@@ -27,6 +28,11 @@ class VideoListSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description[:200] + '...'
+        return ""
+    
+    def get_content(self, obj):
+        if obj.content:
+            return obj.content[:200] + '...</p>'
         return ""
 
     class Meta:

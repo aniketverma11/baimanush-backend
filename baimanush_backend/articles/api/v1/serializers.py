@@ -40,7 +40,7 @@ class PostListSerializer(serializers.ModelSerializer):
     
     def get_content(self, obj):
         if obj.content:
-            return obj.content[:500] + '...</p>'
+            return obj.content[:200] + '...</p>'
         return ""
 
     class Meta:
