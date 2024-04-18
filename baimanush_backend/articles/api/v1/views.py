@@ -58,7 +58,7 @@ class PostListViewset(viewsets.ViewSet):
                     filtered_posts = category.post_set.filter(type=type).order_by("-publish")[:3]
                 else:
                     filtered_posts = category.post_set.all().order_by("-publish")[:3]
-                category_data['posts'] = PostListSerializer(filtered_posts, many=True, context={"request": request}).data
+                category_data['posts'] = CategoryPostListSerializer(filtered_posts, many=True, context={"request": request}).data
                 articles.append(category_data)
             return cached_response(
                 request=request,

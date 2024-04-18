@@ -346,8 +346,19 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:4200",
     "http://127.0.0.1:4200",
+    "https://flowing-rich-impala.ngrok-free.app",
 ]
-
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
@@ -510,3 +521,5 @@ CKEDITOR_CONFIGS = {
 }
 
 SILKY_PYTHON_PROFILER = True
+
+

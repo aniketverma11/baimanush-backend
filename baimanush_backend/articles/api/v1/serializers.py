@@ -125,8 +125,48 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "publish",
         )
 
+class CategoryPostListSerializer(serializers.ModelSerializer):
+    category = CategoryListSerializer()
+    short_description = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """Perform necessary eager loading of data."""
+        # select_related for "to-one" relationships
+        queryset = queryset.select_related("category")
+        return queryset
+
+    def get_short_description(self, obj):
+        if obj.short_description:
+            return "" #obj.short_description[:200] + '...'
+        return ""
+    
+    def get_content(self, obj):
+        if obj.content:
+            return obj.content[:200] + '...</p>'
+        return ""
+
+    class Meta:
+        model = Post
+        fields = (
+            "slug",
+            "short_description",
+            "title",
+            "content",
+            "image",
+            "image_description",
+            "category",
+            "tags",
+            "created_by",
+            "author",
+            "publish",
+        )
+       
+
 class CategoryArticlesSerializer(serializers.ModelSerializer):
-    posts = PostListSerializer(many=True, source="post_set")
+    posts = CategoryPostListSerializer(many=True, source="post_set")
 
     class Meta:
         model = Category

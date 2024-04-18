@@ -12,7 +12,7 @@ class VideoResource(resources.ModelResource):
         model = Video
 
 
-class VideoAdmin(admin.ModelAdmin):
+class VideoAdmin(ImportExportModelAdmin):
     def get_image(self, obj):
         return format_html('<img src="{}" style="max-height: 300px; max-width: 300px;" />', obj.image.url) if obj.image else None
 

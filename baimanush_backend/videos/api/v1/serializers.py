@@ -27,7 +27,7 @@ class VideoListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return obj.short_description[:200] + '...'
+            return "" #obj.short_description[:200] + '...'
         return ""
     
     def get_content(self, obj):
