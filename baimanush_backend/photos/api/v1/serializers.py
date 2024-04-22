@@ -14,6 +14,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class PhotoslistSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
     images = ImagesSerializer(many=True, source="photos_images_set")
     short_description = serializers.SerializerMethodField()
     category = CategoryListSerializer()
@@ -22,6 +23,11 @@ class PhotoslistSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return "" #obj.short_description[:200] + '...'
+        return ""
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title[:80] + '...'
         return ""
 
     class Meta:
