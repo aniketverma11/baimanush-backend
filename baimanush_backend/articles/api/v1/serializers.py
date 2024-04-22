@@ -21,6 +21,7 @@ class ReferenceSerializer(serializers.ModelSerializer):
 
 
 class PostListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
@@ -32,6 +33,11 @@ class PostListSerializer(serializers.ModelSerializer):
         # select_related for "to-one" relationships
         queryset = queryset.select_related("category")
         return queryset
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title[:50] + '...'
+        return ""
 
     def get_short_description(self, obj):
         if obj.short_description:
@@ -94,6 +100,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
 
 class MemberOnlyListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
@@ -108,6 +115,11 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return obj.short_description[:200] + '...'
+        return ""
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.short_title[:50] + '...'
         return ""
 
     class Meta:
@@ -126,6 +138,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
         )
 
 class CategoryPostListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
@@ -141,6 +154,11 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
     def get_short_description(self, obj):
         if obj.short_description:
             return "" #obj.short_description[:200] + '...'
+        return ""
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title[:75] + '...'
         return ""
     
     def get_content(self, obj):
