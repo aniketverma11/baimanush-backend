@@ -8,6 +8,7 @@ from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
 
 class VideoListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     category = CategoryListSerializer()
@@ -19,6 +20,10 @@ class VideoListSerializer(serializers.ModelSerializer):
         # select_related for "to-one" relationships
         queryset = queryset.select_related("category")
         return queryset
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title[:75] + '...'
+        return ""
 
     def get_category(self, obj):
         if obj.category:
