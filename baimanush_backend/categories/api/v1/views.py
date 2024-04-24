@@ -12,7 +12,19 @@ class CategoryViewSet(viewsets.ViewSet):
     serializer_class = CategorySerializer
 
     def get(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        type = request.GET.get("type")
+        serializer_context = {'request': request}
+        if type:
+            serializer = self.serializer_class(self.queryset, many=True, context=serializer_context)
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+        serializer = self.serializer_class(self.queryset, many=True, context=serializer_context)
         return cached_response(
             request=request,
             status=status.HTTP_200_OK,

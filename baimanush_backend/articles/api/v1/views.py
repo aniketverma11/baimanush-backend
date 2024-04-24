@@ -24,7 +24,7 @@ class PostListViewset(viewsets.ViewSet):
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True)
+            serializer = self.serializer_class(articles, many=True, context={"request":request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,

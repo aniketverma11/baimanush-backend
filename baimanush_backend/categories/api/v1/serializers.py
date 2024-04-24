@@ -9,11 +9,25 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        # if request and 'type' in request.GET:
+        type_param = request.GET.get('type')
+        if not type_param != 'english':
+            
+            return {
+                'name': instance.name,
+                'slug': instance.slug,
+                'marathi_name': instance.marathi_name,
+            }
+        return {
+            'name': instance.marathi_name,
+            'slug': instance.slug,
+        }
 
     class Meta:
         model = Category
-        fields = "__all__"
+        fields = ["slug", "name", "marathi_name"]
 
 
 class SubcategoryListSerializer(serializers.ModelSerializer):
@@ -27,4 +41,4 @@ class SubcategoryListSerializer(serializers.ModelSerializer):
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ["slug", "name"]
+        fields = ["slug", "name", "marathi_name"]

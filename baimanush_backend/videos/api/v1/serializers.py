@@ -6,7 +6,6 @@ from baimanush_backend.categories.api.v1.serializers import (
 )
 from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
-
 class VideoListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()

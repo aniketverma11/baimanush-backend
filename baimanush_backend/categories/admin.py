@@ -10,8 +10,8 @@ class SubCategoryInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("uuid", "name", "description", "created")
-    search_fields = ("uuid", "name", "description")
+    list_display = ("uuid", "name", "marathi_name", "created")
+    search_fields = ("uuid", "name", "marathi_name")
     inlines = [SubCategoryInline]
 
 
