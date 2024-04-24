@@ -12,11 +12,11 @@ from baimanush_backend.articles.models import Tag
 # Create your models here.
 class Video(SlugMixin, ImageMixin, StatusMixin, TimeStampedModel, UserStampedMixin):
     POST_CHOICES = (
-        ('english', 'English'),
-        ('marathi', 'Marathi'),
-        ('dhariti', 'Dhariti'),
+        ("english", "English"),
+        ("marathi", "Marathi"),
+        ("dhariti", "Dhariti"),
     )
-    
+
     type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
     video = RichTextField(config_name="allow_iframes")
     title = models.CharField(_("title"), max_length=255, null=False, blank=False)
@@ -50,5 +50,5 @@ class VideoComments(SlugMixin, UserStampedMixin, CommentMixin):
     video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True)
 
     class Meta:
-        verbose_name="Post Comment"
+        verbose_name = "Post Comment"
         verbose_name_plural = "Post Comments"

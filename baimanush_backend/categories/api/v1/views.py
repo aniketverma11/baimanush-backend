@@ -13,9 +13,11 @@ class CategoryViewSet(viewsets.ViewSet):
 
     def get(self, request):
         type = request.GET.get("type")
-        serializer_context = {'request': request}
+        serializer_context = {"request": request}
         if type:
-            serializer = self.serializer_class(self.queryset, many=True, context=serializer_context)
+            serializer = self.serializer_class(
+                self.queryset, many=True, context=serializer_context
+            )
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -24,7 +26,9 @@ class CategoryViewSet(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
-        serializer = self.serializer_class(self.queryset, many=True, context=serializer_context)
+        serializer = self.serializer_class(
+            self.queryset, many=True, context=serializer_context
+        )
         return cached_response(
             request=request,
             status=status.HTTP_200_OK,

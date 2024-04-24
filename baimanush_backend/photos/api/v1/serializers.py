@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.photos.models import Photos, Photos_Images,PhotoComments
+from baimanush_backend.photos.models import Photos, Photos_Images, PhotoComments
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -22,19 +22,19 @@ class PhotoslistSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return "" #obj.short_description[:200] + '...'
+            return ""  # obj.short_description[:200] + '...'
         return ""
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:80] + '...'
+            return obj.title[:80] + "..."
         return ""
 
     class Meta:
         model = Photos
         fields = "__all__"
 
-    
+
 class PhotosDetailSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, source="photos_images_set")
     category = CategoryListSerializer()
@@ -71,7 +71,8 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         trending_serializer = PhotoslistSerializer(trending, many=True)
         return trending_serializer.data
 
+
 class PhotosCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhotoComments
-        fields = '__all__'
+        fields = "__all__"

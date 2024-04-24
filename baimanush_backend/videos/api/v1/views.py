@@ -90,13 +90,11 @@ class CommentsViewset(viewsets.ViewSet):
 
         if serializer.is_valid(raise_exception=True):
             content = serializer.data["content"]
-        
+
         try:
             post = Video.objects.get(slug=post_slug)
             comment = VideoComments.objects.create(
-                user=user,
-                video=post,
-                content=content
+                user=user, video=post, content=content
             )
         except Exception:
             return cached_response(
@@ -107,7 +105,7 @@ class CommentsViewset(viewsets.ViewSet):
                 data={},
                 meta={},
             )
-        
+
         return cached_response(
             request=request,
             status=status.HTTP_201_CREATED,

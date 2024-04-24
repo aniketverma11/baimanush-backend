@@ -6,9 +6,12 @@ from django.core.exceptions import ValidationError
 from baimanush_backend.utils.behaviours import *
 from baimanush_backend.categories.models import *
 
+
 def validate_audio_file(value):
-    if not value.name.endswith(('.mp3', '.wav', '.ogg', '.flac', '.aac', '.wma')):
-        raise ValidationError("Only MP3, WAV, OGG, FLAC, AAC, and WMA files are allowed.")
+    if not value.name.endswith((".mp3", ".wav", ".ogg", ".flac", ".aac", ".wma")):
+        raise ValidationError(
+            "Only MP3, WAV, OGG, FLAC, AAC, and WMA files are allowed."
+        )
 
 
 class Reference(SlugMixin, StatusMixin, TimeStampedModel):
@@ -30,13 +33,18 @@ class Tag(SlugMixin, StatusMixin, TimeStampedModel):
 
 class Post(PostMixin, UserStampedMixin):
     POST_CHOICES = (
-        ('english', 'English'),
-        ('marathi', 'Marathi'),
-        ('dhariti', 'Dhariti'),
+        ("english", "English"),
+        ("marathi", "Marathi"),
+        ("dhariti", "Dhariti"),
     )
-    
+
     type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
-    audio = models.FileField(upload_to=upload_location, validators=[validate_audio_file], blank=True, null=True)
+    audio = models.FileField(
+        upload_to=upload_location,
+        validators=[validate_audio_file],
+        blank=True,
+        null=True,
+    )
     category = models.ForeignKey(Category, models.SET_NULL, blank=True, null=True)
     minutes_read = models.PositiveIntegerField(
         "Minutes Read", default=5, blank=False, null=False
@@ -64,10 +72,9 @@ class SubscribeMail(StatusMixin, TimeStampedModel):
         return str(self.mail)
 
 
-
 class PostComments(SlugMixin, UserStampedMixin, CommentMixin):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True)
 
     class Meta:
-        verbose_name="Post Comment"
+        verbose_name = "Post Comment"
         verbose_name_plural = "Post Comments"

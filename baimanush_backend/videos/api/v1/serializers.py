@@ -6,6 +6,7 @@ from baimanush_backend.categories.api.v1.serializers import (
 )
 from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
+
 class VideoListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
@@ -19,9 +20,10 @@ class VideoListSerializer(serializers.ModelSerializer):
         # select_related for "to-one" relationships
         queryset = queryset.select_related("category")
         return queryset
+
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:75] + '...'
+            return obj.title[:75] + "..."
         return ""
 
     def get_category(self, obj):
@@ -31,12 +33,12 @@ class VideoListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return "" #obj.short_description[:200] + '...'
+            return ""  # obj.short_description[:200] + '...'
         return ""
-    
+
     def get_content(self, obj):
         if obj.content:
-            return obj.content[:200] + '...</p>'
+            return obj.content[:200] + "...</p>"
         return ""
 
     class Meta:
@@ -89,4 +91,4 @@ class VideoDetailSerializer(serializers.ModelSerializer):
 class VideosCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoComments
-        fields = '__all__'
+        fields = "__all__"

@@ -8,6 +8,7 @@ from baimanush_backend.articles.models import Post, SubscribeMail, Reference
 from baimanush_backend.categories.models import Category, SubCategory
 from baimanush_backend.articles.api.v1.serializers import *
 
+
 class PostListViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
@@ -20,11 +21,15 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(home_screen=True, type=type).order_by("-publish")[:8]
+                articles = self.queryset.filter(home_screen=True, type=type).order_by(
+                    "-publish"
+                )[:8]
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True, context={"request":request})
+            serializer = self.serializer_class(
+                articles, many=True, context={"request": request}
+            )
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -42,23 +47,29 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
+
     def article_list_via_category(self, request):
         type = request.GET.get("type")
         if type:
             try:
-                categories = Category.objects.prefetch_related("post_set").all()    
+                categories = Category.objects.prefetch_related("post_set").all()
             except Category.DoesNotExist:
                 categories = []
 
             articles = []
             for category in categories:
-                category_data = CategoryArticlesSerializer(category, context={"request": request}).data
+                category_data = CategoryArticlesSerializer(
+                    category, context={"request": request}
+                ).data
                 if type:
-                    filtered_posts = category.post_set.filter(type=type).order_by("-publish")[:3]
+                    filtered_posts = category.post_set.filter(type=type).order_by(
+                        "-publish"
+                    )[:3]
                 else:
                     filtered_posts = category.post_set.all().order_by("-publish")[:3]
-                category_data['posts'] = CategoryPostListSerializer(filtered_posts, many=True, context={"request": request}).data
+                category_data["posts"] = CategoryPostListSerializer(
+                    filtered_posts, many=True, context={"request": request}
+                ).data
                 articles.append(category_data)
             return cached_response(
                 request=request,
@@ -77,18 +88,20 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
+
     def all_article_list_via_category(self, request, category_slug):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(category__slug=category_slug, type=type).order_by(
-                    "-publish"
-                )
+                articles = self.queryset.filter(
+                    category__slug=category_slug, type=type
+                ).order_by("-publish")
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True, context={"request": request})
+            serializer = self.serializer_class(
+                articles, many=True, context={"request": request}
+            )
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -106,10 +119,7 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
 
-
-    
     def is_member_only_posts(self, request):
         type = request.GET.get("type")
         if type:
@@ -130,7 +140,7 @@ class PostListViewset(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
-        
+
         return cached_response(
             request=request,
             status=status.HTTP_400_BAD_REQUEST,
@@ -144,11 +154,15 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(is_trending=True, type=type).order_by("-publish")[:8]
+                articles = self.queryset.filter(is_trending=True, type=type).order_by(
+                    "-publish"
+                )[:8]
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True, context={"request": request})
+            serializer = self.serializer_class(
+                articles, many=True, context={"request": request}
+            )
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -165,26 +179,28 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
 
-    def search_articles(self,request):
+    def search_articles(self, request):
         type = request.GET.get("type")
         query = request.GET.get("q")
         if type:
-
             try:
-                posts = self.queryset.filter(type=type, title__icontains=query).order_by("-publish")
+                posts = self.queryset.filter(
+                    type=type, title__icontains=query
+                ).order_by("-publish")
             except Exception:
                 posts = self.queryset.filter(type=type).order_by("-publish")[:20]
 
-            serializer = self.serializer_class(posts, many=True, context={"request": request})
+            serializer = self.serializer_class(
+                posts, many=True, context={"request": request}
+            )
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
                 response_status="success",
                 message="",
                 data=serializer.data,
-                meta={}
+                meta={},
             )
 
         return cached_response(
@@ -195,6 +211,7 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
+
 
 class PostDetailViewset(viewsets.ViewSet):
     permission_classes = []
@@ -210,7 +227,9 @@ class PostDetailViewset(viewsets.ViewSet):
             category_slug = kwargs.get("category_slug")
             slug = kwargs.get("slug")
 
-            article = self.queryset.filter(category__slug=category_slug, slug=slug, type=type).first()
+            article = self.queryset.filter(
+                category__slug=category_slug, slug=slug, type=type
+            ).first()
 
             if article:
                 serializer = PostDetailSerializer(article, context={"request": request})
@@ -302,7 +321,6 @@ class MemberPostDetailViewset(viewsets.ViewSet):
         ).first()
 
         if article:
-
             serializer = PostDetailSerializer(article, context={"request": request})
             return cached_response(
                 request=request,
@@ -319,8 +337,6 @@ class MemberPostDetailViewset(viewsets.ViewSet):
             )
 
 
-
-
 class PostCommentsViewset(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = PostCommentSerializer
@@ -333,14 +349,10 @@ class PostCommentsViewset(viewsets.ViewSet):
 
         if serializer.is_valid(raise_exception=True):
             content = serializer.data["content"]
-        
+
         try:
             post = Post.objects.get(slug=post_slug)
-            comment = PostComments.objects.create(
-                user=user,
-                post=post,
-                content=content
-            )
+            comment = PostComments.objects.create(user=user, post=post, content=content)
         except Exception:
             return cached_response(
                 request=request,
@@ -350,7 +362,7 @@ class PostCommentsViewset(viewsets.ViewSet):
                 data={},
                 meta={},
             )
-        
+
         return cached_response(
             request=request,
             status=status.HTTP_201_CREATED,

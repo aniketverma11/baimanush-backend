@@ -36,31 +36,31 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:50] + '...'
+            return obj.title[:50] + "..."
         return ""
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return obj.short_description[:200] + '...'
+            return obj.short_description[:200] + "..."
         return ""
-    
+
     def get_content(self, obj):
         if obj.content:
-            return obj.content[:200] + '...</p>'
+            return obj.content[:200] + "...</p>"
         return ""
-    
+
     def get_category(self, obj):
-        request = self.context.get('request')
-        type_param = request.GET.get('type')
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
         category = obj.category
 
-        if not type_param != 'english':
-            serializer = CategoryListSerializer(category, context={'request': request})
+        if not type_param != "english":
+            serializer = CategoryListSerializer(category, context={"request": request})
             return serializer.data
         else:
             return {
-                'name': category.marathi_name,
-                'slug': category.slug,
+                "name": category.marathi_name,
+                "slug": category.slug,
             }
 
     class Meta:
@@ -95,37 +95,41 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
-        request = self.context.get('request')
+        request = self.context.get("request")
         read_more_data = (
             Post.objects.filter(is_deleted=False, is_draft=False)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
-        read_more_serializer = PostListSerializer(read_more_data, many=True, context={"request":request})
+        read_more_serializer = PostListSerializer(
+            read_more_data, many=True, context={"request": request}
+        )
         return read_more_serializer.data
 
     def get_treanding_news(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         trending = (
             Post.objects.filter(is_trending=True, is_deleted=False, is_draft=False)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
-        trending_serializer = PostListSerializer(trending, many=True, context={"request":request})
+        trending_serializer = PostListSerializer(
+            trending, many=True, context={"request": request}
+        )
         return trending_serializer.data
-    
+
     def get_category(self, obj):
-        request = self.context.get('request')
-        type_param = request.GET.get('type')
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
         category = obj.category
 
-        if not type_param != 'english':
-            serializer = CategoryListSerializer(category, context={'request': request})
+        if not type_param != "english":
+            serializer = CategoryListSerializer(category, context={"request": request})
             return serializer.data
         else:
             return {
-                'name': category.marathi_name,
-                'slug': category.slug,
+                "name": category.marathi_name,
+                "slug": category.slug,
             }
 
 
@@ -144,26 +148,26 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return obj.short_description[:200] + '...'
+            return obj.short_description[:200] + "..."
         return ""
-    
+
     def get_category(self, obj):
-        request = self.context.get('request')
-        type_param = request.GET.get('type')
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
         category = obj.category
 
-        if not type_param != 'english':
-            serializer = CategoryListSerializer(category, context={'request': request})
+        if not type_param != "english":
+            serializer = CategoryListSerializer(category, context={"request": request})
             return serializer.data
         else:
             return {
-                'name': category.marathi_name,
-                'slug': category.slug,
+                "name": category.marathi_name,
+                "slug": category.slug,
             }
 
     def get_title(self, obj):
         if obj.title:
-            return obj.short_title[:50] + '...'
+            return obj.short_title[:50] + "..."
         return ""
 
     class Meta:
@@ -180,6 +184,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
+
 
 class CategoryPostListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
@@ -197,17 +202,17 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return "" #obj.short_description[:200] + '...'
+            return ""  # obj.short_description[:200] + '...'
         return ""
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:75] + '...'
+            return obj.title[:75] + "..."
         return ""
-    
+
     def get_content(self, obj):
         if obj.content:
-            return obj.content[:200] + '...</p>'
+            return obj.content[:200] + "...</p>"
         return ""
 
     class Meta:
@@ -225,7 +230,7 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
-       
+
 
 class CategoryArticlesSerializer(serializers.ModelSerializer):
     posts = CategoryPostListSerializer(many=True, source="post_set")
@@ -238,4 +243,4 @@ class CategoryArticlesSerializer(serializers.ModelSerializer):
 class PostCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostComments
-        fields = '__all__'
+        fields = "__all__"

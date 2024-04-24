@@ -11,11 +11,11 @@ from baimanush_backend.articles.models import Tag
 # Create your models here
 class Photos(SlugMixin, StatusMixin, ImageMixin, TimeStampedModel, UserStampedMixin):
     POST_CHOICES = (
-        ('english', 'English'),
-        ('marathi', 'Marathi'),
-        ('dhariti', 'Dhariti'),
+        ("english", "English"),
+        ("marathi", "Marathi"),
+        ("dhariti", "Dhariti"),
     )
-    
+
     type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
     title = models.CharField(_("title"), max_length=255, null=False, blank=False)
     short_description = models.TextField(
@@ -58,5 +58,5 @@ class PhotoComments(SlugMixin, UserStampedMixin, CommentMixin):
     photo = models.ForeignKey(Photos, on_delete=models.CASCADE, blank=True)
 
     class Meta:
-        verbose_name="Photos Comment"
+        verbose_name = "Photos Comment"
         verbose_name_plural = "Photos Comments"

@@ -14,29 +14,51 @@ class VideoResource(resources.ModelResource):
 
 class VideoAdmin(ImportExportModelAdmin):
     def get_image(self, obj):
-        return format_html('<img src="{}" style="max-height: 300px; max-width: 300px;" />', obj.image.url) if obj.image else None
+        return (
+            format_html(
+                '<img src="{}" style="max-height: 300px; max-width: 300px;" />',
+                obj.image.url,
+            )
+            if obj.image
+            else None
+        )
 
-    
-    get_image.short_description = 'Video Thumbnail Image'
+    get_image.short_description = "Video Thumbnail Image"
 
     fieldsets = (
-        ('Post Details', {
-            'fields': ('type','slug', 'title', 'category','tags', 'minutes_read', 'author', 'publish')
-        }),
-        ('Content', {
-            'fields': ('video', 'short_description', 'content')
-        }),
-        ('Image', {
-            'fields': ('image', 'image_description', "get_image")
-        }),
-        ('Status', {
-            'fields': ('is_for_members', 'home_screen', 'is_draft', 'is_trending', 'is_active', 'is_deleted')
-        }),
-        ('Tracking', {
-            'fields': ('views_count', 'created_by', 'modified_by')
-        }),
+        (
+            "Post Details",
+            {
+                "fields": (
+                    "type",
+                    "slug",
+                    "title",
+                    "category",
+                    "tags",
+                    "minutes_read",
+                    "author",
+                    "publish",
+                )
+            },
+        ),
+        ("Content", {"fields": ("video", "short_description", "content")}),
+        ("Image", {"fields": ("image", "image_description", "get_image")}),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_for_members",
+                    "home_screen",
+                    "is_draft",
+                    "is_trending",
+                    "is_active",
+                    "is_deleted",
+                )
+            },
+        ),
+        ("Tracking", {"fields": ("views_count", "created_by", "modified_by")}),
     )
-    readonly_fields = ('get_image',)
+    readonly_fields = ("get_image",)
     resource_class = VideoResource
     list_display = (
         "slug",
@@ -55,7 +77,7 @@ class VideoAdmin(ImportExportModelAdmin):
         "created",
         "created_by",
     )
-    list_filter = ('type',"slug", "category", "is_for_members", "is_draft")
+    list_filter = ("type", "slug", "category", "is_for_members", "is_draft")
     search_fields = ("slug", "title", "author")
     filter_horizontal = ("tags",)
 

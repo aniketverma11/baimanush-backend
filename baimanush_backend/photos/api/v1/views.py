@@ -3,7 +3,12 @@ from baimanush_backend.utils.response import cached_response
 from rest_framework.permissions import IsAuthenticated
 
 from baimanush_backend.photos.models import Photos, Photos_Images, PhotoComments
-from .serializers import PhotosDetailSerializer, ImagesSerializer, PhotoslistSerializer, PhotosCommentSerializer
+from .serializers import (
+    PhotosDetailSerializer,
+    ImagesSerializer,
+    PhotoslistSerializer,
+    PhotosCommentSerializer,
+)
 
 
 class PhotosViewSet(viewsets.ViewSet):
@@ -42,7 +47,11 @@ class PhotosViewSet(viewsets.ViewSet):
     def get(self, request, slug):
         type = request.GET.get("type")
         if type:
-            photo = self.queryset.prefetch_related("photos_images_set").filter(slug=slug).first()
+            photo = (
+                self.queryset.prefetch_related("photos_images_set")
+                .filter(slug=slug)
+                .first()
+            )
             serializer = PhotosDetailSerializer(photo)
 
             return cached_response(
@@ -62,6 +71,7 @@ class PhotosViewSet(viewsets.ViewSet):
             meta={},
         )
 
+
 class PhotoCommentsViewset(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = PhotosCommentSerializer
@@ -74,13 +84,11 @@ class PhotoCommentsViewset(viewsets.ViewSet):
 
         if serializer.is_valid(raise_exception=True):
             content = serializer.data["content"]
-        
+
         try:
             post = Photos.objects.get(slug=post_slug)
             comment = PhotoComments.objects.create(
-                user=user,
-                photo=post,
-                content=content
+                user=user, photo=post, content=content
             )
         except Exception:
             return cached_response(
@@ -91,7 +99,7 @@ class PhotoCommentsViewset(viewsets.ViewSet):
                 data={},
                 meta={},
             )
-        
+
         return cached_response(
             request=request,
             status=status.HTTP_201_CREATED,
