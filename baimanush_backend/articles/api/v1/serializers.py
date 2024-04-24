@@ -95,21 +95,23 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
+        request = self.context.get('request')
         read_more_data = (
             Post.objects.filter(is_deleted=False, is_draft=False)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
-        read_more_serializer = PostListSerializer(read_more_data, many=True)
+        read_more_serializer = PostListSerializer(read_more_data, many=True, context={"request":request})
         return read_more_serializer.data
 
     def get_treanding_news(self, obj):
+        request = self.context.get('request')
         trending = (
             Post.objects.filter(is_trending=True, is_deleted=False, is_draft=False)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
-        trending_serializer = PostListSerializer(trending, many=True)
+        trending_serializer = PostListSerializer(trending, many=True, context={"request":request})
         return trending_serializer.data
     
     def get_category(self, obj):

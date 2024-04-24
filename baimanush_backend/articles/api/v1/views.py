@@ -88,7 +88,7 @@ class PostListViewset(viewsets.ViewSet):
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True)
+            serializer = self.serializer_class(articles, many=True, context={"request": request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -148,7 +148,7 @@ class PostListViewset(viewsets.ViewSet):
             except Post.DoesNotExist:
                 articles = []
 
-            serializer = self.serializer_class(articles, many=True)
+            serializer = self.serializer_class(articles, many=True, context={"request": request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -177,7 +177,7 @@ class PostListViewset(viewsets.ViewSet):
             except Exception:
                 posts = self.queryset.filter(type=type).order_by("-publish")[:20]
 
-            serializer = self.serializer_class(posts, many=True)
+            serializer = self.serializer_class(posts, many=True, context={"request": request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -213,7 +213,7 @@ class PostDetailViewset(viewsets.ViewSet):
             article = self.queryset.filter(category__slug=category_slug, slug=slug, type=type).first()
 
             if article:
-                serializer = PostDetailSerializer(article)
+                serializer = PostDetailSerializer(article, context={"request": request})
                 return cached_response(
                     request=request,
                     status=status.HTTP_200_OK,
@@ -225,7 +225,7 @@ class PostDetailViewset(viewsets.ViewSet):
 
             article = self.queryset.filter(slug=slug, type=type).first()
             if article:
-                serializer = PostDetailSerializer(article)
+                serializer = PostDetailSerializer(article, context={"request": request})
                 return cached_response(
                     request=request,
                     status=status.HTTP_200_OK,
@@ -259,7 +259,7 @@ class PostDetailViewset(viewsets.ViewSet):
             article = self.queryset.filter(slug=slug, type=type).first()
 
             if article:
-                serializer = PostDetailSerializer(article)
+                serializer = PostDetailSerializer(article, context={"request": request})
                 return cached_response(
                     request=request,
                     status=status.HTTP_200_OK,
@@ -303,7 +303,7 @@ class MemberPostDetailViewset(viewsets.ViewSet):
 
         if article:
 
-            serializer = PostDetailSerializer(article)
+            serializer = PostDetailSerializer(article, context={"request": request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
