@@ -23,6 +23,18 @@ class PostListSerializer(serializers.ModelSerializer):
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    audio = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
+
+    def get_audio(self, obj):
+        if obj.audio:
+            return obj.audio.url 
+        return ''
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -84,6 +96,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    audio = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -91,8 +104,12 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            #request = self.context.get('request')
-            return obj.image.url #request.build_absolute_uri(obj.image.url)
+            return obj.image.url 
+        return ''
+
+    def get_audio(self, obj):
+        if obj.audio:
+            return obj.audio.url 
         return ''
 
     def get_read_more(self, obj):
@@ -142,6 +159,18 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    audio = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
+
+    def get_audio(self, obj):
+        if obj.audio:
+            return obj.audio.url 
+        return ''
 
     @staticmethod
     def setup_eager_loading(queryset):
