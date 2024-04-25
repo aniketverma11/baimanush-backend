@@ -52,7 +52,7 @@ class PhotosViewSet(viewsets.ViewSet):
                 .filter(slug=slug)
                 .first()
             )
-            serializer = PhotosDetailSerializer(photo)
+            serializer = PhotosDetailSerializer(photo, context={"request": request})
 
             return cached_response(
                 request=request,

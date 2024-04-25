@@ -54,8 +54,10 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
         read_more_data = (
-            Photos.objects.filter(is_deleted=False, is_draft=False)
+            Photos.objects.filter(is_deleted=False, is_draft=False, type=type_param)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed

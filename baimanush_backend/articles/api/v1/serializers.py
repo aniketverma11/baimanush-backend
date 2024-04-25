@@ -4,9 +4,11 @@ from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
 )
-
 from baimanush_backend.categories.models import Category
 
+class ImagePathField(serializers.Field):
+    def to_representation(self, value):
+        return value.path
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,13 +21,13 @@ class ReferenceSerializer(serializers.ModelSerializer):
         model = Reference
         fields = ["slug", "title", "url"]
 
-
 class PostListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
+    image = ImagePathField()
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -79,7 +81,6 @@ class PostListSerializer(serializers.ModelSerializer):
             "publish",
         )
 
-
 class PostDetailSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     sub_categories = SubcategoryListSerializer(many=True)
@@ -87,6 +88,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     references = ReferenceSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
+    image = ImagePathField()
 
     class Meta:
         model = Post
@@ -96,8 +98,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
         # Fetch additional data for "read_more" here
         # Assuming read_more_data is a list of additional data
         request = self.context.get("request")
+        type_param = request.GET.get("type")
+        request = self.context.get("request")
         read_more_data = (
-            Post.objects.filter(is_deleted=False, is_draft=False)
+            Post.objects.filter(is_deleted=False, is_draft=False, type=type_param)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
@@ -132,12 +136,12 @@ class PostDetailSerializer(serializers.ModelSerializer):
                 "slug": category.slug,
             }
 
-
 class MemberOnlyListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
+    image = ImagePathField()
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -185,7 +189,6 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "publish",
         )
 
-
 class CategoryPostListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     category = CategoryListSerializer()
@@ -231,14 +234,12 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
             "publish",
         )
 
-
 class CategoryArticlesSerializer(serializers.ModelSerializer):
     posts = CategoryPostListSerializer(many=True, source="post_set")
 
     class Meta:
         model = Category
         fields = "__all__"
-
 
 class PostCommentSerializer(serializers.ModelSerializer):
     class Meta:
