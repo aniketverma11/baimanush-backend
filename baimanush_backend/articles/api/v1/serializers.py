@@ -6,10 +6,6 @@ from baimanush_backend.categories.api.v1.serializers import (
 )
 from baimanush_backend.categories.models import Category
 
-class ImagePathField(serializers.Field):
-    def to_representation(self, value):
-        return value.path
-
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -27,7 +23,6 @@ class PostListSerializer(serializers.ModelSerializer):
     short_description = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
-    image = ImagePathField()
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -88,7 +83,6 @@ class PostDetailSerializer(serializers.ModelSerializer):
     references = ReferenceSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
-    image = ImagePathField()
 
     class Meta:
         model = Post
@@ -141,7 +135,6 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True)
-    image = ImagePathField()
 
     @staticmethod
     def setup_eager_loading(queryset):
