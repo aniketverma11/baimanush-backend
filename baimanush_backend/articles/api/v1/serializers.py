@@ -80,6 +80,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "image",
+            "audio",
             "image_description",
             "category",
             "tags",
