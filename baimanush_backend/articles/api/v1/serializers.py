@@ -83,10 +83,17 @@ class PostDetailSerializer(serializers.ModelSerializer):
     references = ReferenceSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = "__all__"
+
+    def get_image(self, obj):
+        if obj.image:
+            #request = self.context.get('request')
+            return obj.image.url #request.build_absolute_uri(obj.image.url)
+        return ''
 
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
