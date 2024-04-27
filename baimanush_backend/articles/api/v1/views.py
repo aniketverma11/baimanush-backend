@@ -52,7 +52,7 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                categories = Category.objects.prefetch_related("post_set").all()
+                categories = Category.objects.prefetch_related("post_set").all().order_by('-created')
             except Category.DoesNotExist:
                 categories = []
 

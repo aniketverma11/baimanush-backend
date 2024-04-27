@@ -62,15 +62,21 @@ class PostListSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         type_param = request.GET.get("type")
         category = obj.category
-
-        if not type_param != "english":
-            serializer = CategoryListSerializer(category, context={"request": request})
-            return serializer.data
-        else:
+        
+        try:
+            if not type_param != "english":
+                serializer = CategoryListSerializer(category, context={"request": request})
+                return serializer.data
+            else:
+                return {
+                    "name": category.marathi_name,
+                    "slug": category.slug,
+                 }
+        except Exception:
             return {
-                "name": category.marathi_name,
-                "slug": category.slug,
-            }
+                    "name": "",
+                    "slug": "",
+                 }
 
     class Meta:
         model = Post
@@ -145,15 +151,21 @@ class PostDetailSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         type_param = request.GET.get("type")
         category = obj.category
-
-        if not type_param != "english":
-            serializer = CategoryListSerializer(category, context={"request": request})
-            return serializer.data
-        else:
+        
+        try:
+            if not type_param != "english":
+                serializer = CategoryListSerializer(category, context={"request": request})
+                return serializer.data
+            else:
+                return {
+                    "name": category.marathi_name,
+                    "slug": category.slug,
+                 }
+        except Exception:
             return {
-                "name": category.marathi_name,
-                "slug": category.slug,
-            }
+                    "name": "",
+                    "slug": "",
+                 }
 
 class MemberOnlyListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
@@ -190,14 +202,20 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
         type_param = request.GET.get("type")
         category = obj.category
 
-        if not type_param != "english":
-            serializer = CategoryListSerializer(category, context={"request": request})
-            return serializer.data
-        else:
+        try:
+            if not type_param != "english":
+                serializer = CategoryListSerializer(category, context={"request": request})
+                return serializer.data
+            else:
+                return {
+                    "name": category.marathi_name,
+                    "slug": category.slug,
+                 }
+        except Exception:
             return {
-                "name": category.marathi_name,
-                "slug": category.slug,
-            }
+                    "name": "",
+                    "slug": "",
+                 }
 
     def get_title(self, obj):
         if obj.title:

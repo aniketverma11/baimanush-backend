@@ -8,7 +8,7 @@ from baimanush_backend.utils.response import cached_response
 class CategoryViewSet(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by("-created")
     serializer_class = CategorySerializer
 
     def get(self, request):
