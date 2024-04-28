@@ -94,6 +94,49 @@ class PostListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
+        
+
+class PostTrendingNewsSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    audio = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
+
+    def get_audio(self, obj):
+        if obj.audio:
+            return obj.audio.url 
+        return ''
+    
+    def get_category(self, obj):
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
+        category = obj.category
+        
+        try:
+            if not type_param != "english":
+                serializer = CategoryListSerializer(category, context={"request": request})
+                return serializer.data
+            else:
+                return {
+                    "name": category.marathi_name,
+                    "slug": category.slug,
+                 }
+        except Exception:
+            return {
+                    "name": "",
+                    "slug": "",
+                 }
+    
+
 
 class PostDetailSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
@@ -142,7 +185,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
-        trending_serializer = PostListSerializer(
+        trending_serializer = PostTrendingNewsSerializer(
             trending, many=True, context={"request": request}
         )
         return trending_serializer.data
