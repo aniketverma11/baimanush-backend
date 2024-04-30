@@ -8,9 +8,18 @@ from baimanush_backend.articles.api.v1.serializers import TagSerializer
 
 
 class ImagesSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Photos_Images
         fields = "__all__"
+    
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
+
+    
 
 
 class PhotoslistSerializer(serializers.ModelSerializer):
@@ -19,11 +28,17 @@ class PhotoslistSerializer(serializers.ModelSerializer):
     short_description = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
 
     def get_short_description(self, obj):
         if obj.short_description:
             return ""  # obj.short_description[:200] + '...'
         return ""
+    
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
 
     def get_title(self, obj):
         if obj.title:
@@ -41,10 +56,16 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Photos
         fields = "__all__"
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
 
     def get_category(self, obj):
         if obj.category:
