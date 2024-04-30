@@ -327,10 +327,20 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
 
 class CategoryArticlesSerializer(serializers.ModelSerializer):
     posts = CategoryPostListSerializer(many=True, source="post_set")
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
         fields = "__all__"
+
+    def get_name(self, obj):
+        request = self.context.get("request")
+        # if request and 'type' in request.GET:
+        type_param = request.GET.get("type")
+        if type_param == 'english':
+            return obj.name
+        else:
+            return obj.marathi_name
 
 class PostCommentSerializer(serializers.ModelSerializer):
     class Meta:
