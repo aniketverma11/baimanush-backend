@@ -30,4 +30,5 @@ urlpatterns = [
         "members-only/", views.PostListViewset.as_view({"get": "is_member_only_posts"})
     ),
     path("trending-posts/", views.PostListViewset.as_view({"get": "trending_posts"})),
+    path("most-viewed/", views.PostListViewset.as_view({"get": "most_viewed"})),
 ]

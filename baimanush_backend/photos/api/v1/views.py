@@ -52,6 +52,12 @@ class PhotosViewSet(viewsets.ViewSet):
                 .filter(slug=slug)
                 .first()
             )
+            try:
+                photo.views_count += 1
+                photo.save()
+            except Exception:
+                pass
+
             serializer = PhotosDetailSerializer(photo, context={"request": request})
 
             return cached_response(
@@ -62,6 +68,37 @@ class PhotosViewSet(viewsets.ViewSet):
                 data=serializer.data,
                 meta={},
             )
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="success",
+            message="Type is required",
+            data={},
+            meta={},
+        )
+    
+    def most_viewed(self, request):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(
+                    type=type
+                ).order_by("-views_count")[:10]
+            except Photos.DoesNotExist:
+                articles = []
+
+            serializer = self.serializer_class(
+                articles, many=True, context={"request": request}
+            )
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+
         return cached_response(
             request=request,
             status=status.HTTP_400_BAD_REQUEST,
