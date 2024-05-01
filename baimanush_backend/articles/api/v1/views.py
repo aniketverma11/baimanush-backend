@@ -8,6 +8,12 @@ from baimanush_backend.articles.models import Post, SubscribeMail, Reference
 from baimanush_backend.categories.models import Category, SubCategory
 from baimanush_backend.articles.api.v1.serializers import *
 
+from baimanush_backend.videos.models import Video
+from baimanush_backend.videos.api.v1.serializers import VideoListSerializer
+
+from baimanush_backend.photos.models import Photos
+from baimanush_backend.photos.api.v1.serializers import PhotoslistSerializer
+
 
 class PostListViewset(viewsets.ViewSet):
     permission_classes = []
@@ -218,15 +224,46 @@ class PostListViewset(viewsets.ViewSet):
 
     def most_viewed(self, request):
         type = request.GET.get("type")
-        if type:
-            try:
-                articles = self.queryset.filter(type=type).order_by("-views_count")[:10]
-            except Post.DoesNotExist:
-                articles = []
+        type = request.GET.get("type")
+        q = request.GET.get("q")
+        if type and q:
+            if q == "videos":
+                try:
+                    articles = Video.objects.filter(
+                        is_deleted=False, is_draft=False, type=type
+                    ).order_by("-views_count")[:10]
+                except Video.DoesNotExist:
+                    articles = []
+                serializer = VideoListSerializer(
+                    articles, many=True, context={"request": request}
+                )
 
-            serializer = self.serializer_class(
-                articles, many=True, context={"request": request}
-            )
+            if q == "photos":
+                try:
+                    articles = Photos.objects.filter(
+                        is_deleted=False, is_draft=False, type=type
+                    ).order_by("-views_count")[:10]
+
+                except Photos.DoesNotExist:
+                    articles = []
+
+                serializer = PhotoslistSerializer(
+                    articles, many=True, context={"request": request}
+                )
+
+            if q == "posts":
+                try:
+                    articles = Post.objects.filter(
+                        is_deleted=False, is_draft=False, type=type
+                    ).order_by("-views_count")[:10]
+
+                except Post.DoesNotExist:
+                    articles = []
+
+                serializer = PostListSerializer(
+                    articles, many=True, context={"request": request}
+                )
+
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -240,7 +277,7 @@ class PostListViewset(viewsets.ViewSet):
             request=request,
             status=status.HTTP_400_BAD_REQUEST,
             response_status="success",
-            message="Type is required",
+            message="Type OR q is required",
             data={},
             meta={},
         )
