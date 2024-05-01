@@ -5,5 +5,4 @@ urlpatterns = [
     path("", views.PhotosViewSet.as_view({"get": "list"})),
     path("<slug:slug>", views.PhotosViewSet.as_view({"get": "get"})),
     path("most-viewed/", views.PhotosViewSet.as_view({"get": "most_viewed"})),
-
 ]

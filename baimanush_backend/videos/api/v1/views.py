@@ -81,14 +81,12 @@ class VideoListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
+
     def most_viewed(self, request):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(
-                    type=type
-                ).order_by("-views_count")[:10]
+                articles = self.queryset.filter(type=type).order_by("-views_count")[:10]
             except Video.DoesNotExist:
                 articles = []
 
@@ -112,7 +110,6 @@ class VideoListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-
 
 
 class CommentsViewset(viewsets.ViewSet):

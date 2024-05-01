@@ -6,6 +6,7 @@ from baimanush_backend.categories.api.v1.serializers import (
 )
 from baimanush_backend.categories.models import Category
 
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -16,6 +17,7 @@ class ReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reference
         fields = ["slug", "title", "url"]
+
 
 class PostListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
@@ -28,13 +30,13 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_audio(self, obj):
         if obj.audio:
-            return obj.audio.url 
-        return ''
+            return obj.audio.url
+        return ""
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -62,21 +64,23 @@ class PostListSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         type_param = request.GET.get("type")
         category = obj.category
-        
+
         try:
             if not type_param != "english":
-                serializer = CategoryListSerializer(category, context={"request": request})
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
                 return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
                     "slug": category.slug,
-                 }
+                }
         except Exception:
             return {
-                    "name": "",
-                    "slug": "",
-                 }
+                "name": "",
+                "slug": "",
+            }
 
     class Meta:
         model = Post
@@ -94,7 +98,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
-        
+
 
 class PostTrendingNewsSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
@@ -108,34 +112,35 @@ class PostTrendingNewsSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_audio(self, obj):
         if obj.audio:
-            return obj.audio.url 
-        return ''
-    
+            return obj.audio.url
+        return ""
+
     def get_category(self, obj):
         request = self.context.get("request")
         type_param = request.GET.get("type")
         category = obj.category
-        
+
         try:
             if not type_param != "english":
-                serializer = CategoryListSerializer(category, context={"request": request})
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
                 return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
                     "slug": category.slug,
-                 }
+                }
         except Exception:
             return {
-                    "name": "",
-                    "slug": "",
-                 }
-    
+                "name": "",
+                "slug": "",
+            }
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -154,13 +159,13 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_audio(self, obj):
         if obj.audio:
-            return obj.audio.url 
-        return ''
+            return obj.audio.url
+        return ""
 
     def get_read_more(self, obj):
         # Fetch additional data for "read_more" here
@@ -194,21 +199,24 @@ class PostDetailSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         type_param = request.GET.get("type")
         category = obj.category
-        
+
         try:
             if not type_param != "english":
-                serializer = CategoryListSerializer(category, context={"request": request})
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
                 return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
                     "slug": category.slug,
-                 }
+                }
         except Exception:
             return {
-                    "name": "",
-                    "slug": "",
-                 }
+                "name": "",
+                "slug": "",
+            }
+
 
 class MemberOnlyListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
@@ -220,13 +228,13 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_audio(self, obj):
         if obj.audio:
-            return obj.audio.url 
-        return ''
+            return obj.audio.url
+        return ""
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -247,18 +255,20 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
         try:
             if not type_param != "english":
-                serializer = CategoryListSerializer(category, context={"request": request})
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
                 return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
                     "slug": category.slug,
-                 }
+                }
         except Exception:
             return {
-                    "name": "",
-                    "slug": "",
-                 }
+                "name": "",
+                "slug": "",
+            }
 
     def get_title(self, obj):
         if obj.title:
@@ -279,6 +289,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "author",
             "publish",
         )
+
 
 class CategoryPostListSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
@@ -325,6 +336,7 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
             "publish",
         )
 
+
 class CategoryArticlesSerializer(serializers.ModelSerializer):
     posts = CategoryPostListSerializer(many=True, source="post_set")
     name = serializers.SerializerMethodField()
@@ -337,10 +349,11 @@ class CategoryArticlesSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         # if request and 'type' in request.GET:
         type_param = request.GET.get("type")
-        if type_param == 'english':
+        if type_param == "english":
             return obj.name
         else:
             return obj.marathi_name
+
 
 class PostCommentSerializer(serializers.ModelSerializer):
     class Meta:

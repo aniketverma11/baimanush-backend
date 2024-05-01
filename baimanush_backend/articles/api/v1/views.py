@@ -52,7 +52,11 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                categories = Category.objects.prefetch_related("post_set").all().order_by('-created')
+                categories = (
+                    Category.objects.prefetch_related("post_set")
+                    .all()
+                    .order_by("-created")
+                )
             except Category.DoesNotExist:
                 categories = []
 
@@ -211,14 +215,12 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
-    
+
     def most_viewed(self, request):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(
-                    type=type
-                ).order_by("-views_count")[:10]
+                articles = self.queryset.filter(type=type).order_by("-views_count")[:10]
             except Post.DoesNotExist:
                 articles = []
 
@@ -244,7 +246,6 @@ class PostListViewset(viewsets.ViewSet):
         )
 
 
-
 class PostDetailViewset(viewsets.ViewSet):
     permission_classes = []
     authentication_classes = []
@@ -262,7 +263,7 @@ class PostDetailViewset(viewsets.ViewSet):
             article = self.queryset.filter(
                 category__slug=category_slug, slug=slug, type=type
             ).first()
-            
+
             try:
                 article.views_count += 1
                 article.save()

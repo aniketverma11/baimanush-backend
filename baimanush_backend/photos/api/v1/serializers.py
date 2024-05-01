@@ -13,13 +13,11 @@ class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photos_Images
         fields = "__all__"
-    
+
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
-
-    
+            return obj.image.url
+        return ""
 
 
 class PhotoslistSerializer(serializers.ModelSerializer):
@@ -34,11 +32,11 @@ class PhotoslistSerializer(serializers.ModelSerializer):
         if obj.short_description:
             return ""  # obj.short_description[:200] + '...'
         return ""
-    
+
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_title(self, obj):
         if obj.title:
@@ -64,8 +62,8 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_category(self, obj):
         if obj.category:

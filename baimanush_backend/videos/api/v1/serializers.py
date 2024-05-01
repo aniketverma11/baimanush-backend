@@ -24,9 +24,9 @@ class VideoListSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
-    
+            return obj.image.url
+        return ""
+
     def get_title(self, obj):
         if obj.title:
             return obj.title[:75] + "..."
@@ -84,11 +84,11 @@ class VideoDetailSerializer(serializers.ModelSerializer):
         )  # Fetch read_more data as needed
         read_more_serializer = VideoListSerializer(read_more_data, many=True)
         return read_more_serializer.data
-    
+
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url 
-        return ''
+            return obj.image.url
+        return ""
 
     def get_treanding_news(self, obj):
         trending = (
