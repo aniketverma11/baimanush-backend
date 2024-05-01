@@ -13,6 +13,7 @@ class VideoListSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
     category = CategoryListSerializer()
     tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -21,6 +22,11 @@ class VideoListSerializer(serializers.ModelSerializer):
         queryset = queryset.select_related("category")
         return queryset
 
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
+    
     def get_title(self, obj):
         if obj.title:
             return obj.title[:75] + "..."
@@ -62,6 +68,7 @@ class VideoDetailSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     read_more = serializers.SerializerMethodField()
     treanding_news = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Video
@@ -77,6 +84,11 @@ class VideoDetailSerializer(serializers.ModelSerializer):
         )  # Fetch read_more data as needed
         read_more_serializer = VideoListSerializer(read_more_data, many=True)
         return read_more_serializer.data
+    
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url 
+        return ''
 
     def get_treanding_news(self, obj):
         trending = (
