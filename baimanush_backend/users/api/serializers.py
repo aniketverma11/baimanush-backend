@@ -10,7 +10,6 @@ from utils.utils import (
 )
 from utils.utils import string_encrypt, decrypt_string
 
-
 User = get_user_model()
 
 
