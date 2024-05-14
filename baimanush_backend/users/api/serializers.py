@@ -27,7 +27,7 @@ class CreateUserProfileSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     email = serializers.EmailField()
-    phone_number = serializers.CharField()
+    phone_number = serializers.CharField(required=False)
 
     # def validate(self, data):
     #     if User.objects.filter(mobile=data["phone_number"]).exists():
