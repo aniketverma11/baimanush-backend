@@ -14,16 +14,7 @@ SECRET_KEY = env(
     default="fMS46g4GgOYxUL4cKNyaBjtwku4fRYTMZa7w44CJZuB85ZSqV3GGQQmPd1XTLCOP",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [
-    "localhost",
-    "0.0.0.0",
-    "127.0.0.1",
-    "3.27.228.84",
-    "localhost",
-    "127.0.0.1",
-    "flowing-rich-impala.ngrok-free.app",
-    "3.105.252.99",
-]  # noqa: S104
+ALLOWED_HOSTS = ["*"]  # noqa: S104
 
 # CACHES
 # ------------------------------------------------------------------------------
