@@ -28,19 +28,18 @@ class CreateUserProfileSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     email = serializers.EmailField()
     phone_number = serializers.CharField()
-    password = serializers.CharField()
 
-    def validate(self, data):
-        if User.objects.filter(mobile=data["phone_number"]).exists():
-            raise serializers.ValidationError(
-                "User with this mobile number  already exists"
-            )
-        if User.objects.filter(email=data["email"].lower()).exists():
-            raise serializers.ValidationError(
-                "User with this email {} already exists".format(data["email"])
-            )
+    # def validate(self, data):
+    #     if User.objects.filter(mobile=data["phone_number"]).exists():
+    #         raise serializers.ValidationError(
+    #             "User with this mobile number  already exists"
+    #         )
+    #     if User.objects.filter(email=data["email"].lower()).exists():
+    #         raise serializers.ValidationError(
+    #             "User with this email {} already exists".format(data["email"])
+    #         )
 
-        return data
+    #     return data
 
     def create(self, validated_data):
         user_object = User.objects.create_user(
@@ -49,8 +48,7 @@ class CreateUserProfileSerializer(serializers.Serializer):
             last_name=validated_data["last_name"],
             name=validated_data["first_name"] + validated_data["last_name"],
             email=validated_data["email"],
-            mobile=validated_data["phone_number"],
-            password=validated_data["password"],
+            password="Baimanus@1234567890",
             is_active=False,
         )
 
@@ -86,7 +84,6 @@ class UpdateUserProfileSerializer(serializers.Serializer):
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
 
     def validate(self, data):
         try:
@@ -96,14 +93,6 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "User with this email {} not exists".format(data["email"])
             )
-
-        # Check if the provided password matches the user's password
-        if user.check_password(data["password"]):
-            return data
-
-        else:
-            raise serializers.ValidationError("invalid password ")
-
 
 class LoginResponseSerializer(serializers.Serializer):
     user_profile = serializers.SerializerMethodField(read_only=True)

@@ -50,7 +50,53 @@ class CreateProfileViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = CreateUserProfileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            # if User.objects.filter(email=serializer.data["email"]).first():
+            try:
+                user_object = User.objects.get(email=serializer.validated_data["email"])
+                refresh = MyTokenObtainPairSerializer.get_token(user_object)
+                refresh_token = str(refresh)
+                access_token = str(refresh.access_token)
+
+                loginresponseserializer_objects = LoginResponseSerializer(
+                    {
+                        "user_profile": user_object,
+                        "refresh_token": refresh_token,
+                        "access_token": access_token,
+                    }
+                )
+                return cached_response(
+                    request=request,
+                    status=status.HTTP_201_CREATED,
+                    response_status="success",
+                    message="Login Successfully",
+                    data=loginresponseserializer_objects.data,
+                    meta={},
+                )
+            
+            except User.DoesNotExist:
+
+                serializer.save()
+                user_object = User.objects.get(email=serializer.validated_data["email"])
+                refresh = MyTokenObtainPairSerializer.get_token(user_object)
+                refresh_token = str(refresh)
+                access_token = str(refresh.access_token)
+
+                loginresponseserializer_objects = LoginResponseSerializer(
+                    {
+                        "user_profile": user_object,
+                        "refresh_token": refresh_token,
+                        "access_token": access_token,
+                    }
+                )
+                return cached_response(
+                    request=request,
+                    status=status.HTTP_201_CREATED,
+                    response_status="success",
+                    message="SignIn Successfully",
+                    data=loginresponseserializer_objects.data,
+                    meta={},
+                )
+
 
         return cached_response(
             request=request,
