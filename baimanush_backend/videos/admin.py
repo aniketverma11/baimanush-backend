@@ -12,7 +12,8 @@ class VideoResource(resources.ModelResource):
         model = Video
 
 
-class VideoAdmin(ImportExportModelAdmin):
+# class VideoAdmin(ImportExportModelAdmin):
+class VideoAdmin(admin.ModelAdmin):
     def get_image(self, obj):
         return (
             format_html(

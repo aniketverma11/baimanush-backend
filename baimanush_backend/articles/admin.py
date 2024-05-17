@@ -11,7 +11,8 @@ class PostResource(resources.ModelResource):
         model = Post
 
 
-class PostAdmin(ImportExportModelAdmin):
+# class PostAdmin(ImportExportModelAdmin):
+class PostAdmin(admin.ModelAdmin):
     def get_image(self, obj):
         return (
             format_html(
