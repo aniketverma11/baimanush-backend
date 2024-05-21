@@ -21,7 +21,7 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("baimanush_backend.users.urls", namespace="users")),
+    path("api/v1/users/", include("baimanush_backend.users.urls", namespace="users")),
     path("api/v1/posts/", include("baimanush_backend.articles.urls")),
     path("api/v1/", include("baimanush_backend.categories.urls")),
     path("api/v1/photos/", include("baimanush_backend.photos.urls")),
