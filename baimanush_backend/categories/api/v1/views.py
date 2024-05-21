@@ -18,6 +18,7 @@ class CategoryViewSet(viewsets.ViewSet):
             serializer = self.serializer_class(
                 self.queryset, many=True, context=serializer_context
             )
+            print(self.queryset, "----------------")
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,

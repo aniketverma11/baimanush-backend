@@ -292,7 +292,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.short_title[:50] + "..."
+            return obj.title[:50] + "..."
         return ""
 
     class Meta:
@@ -302,6 +302,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
             "short_description",
             "title",
             "image",
+            "audio",
             "image_description",
             "category",
             "tags",
