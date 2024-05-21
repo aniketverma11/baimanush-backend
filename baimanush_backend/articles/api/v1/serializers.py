@@ -71,6 +71,11 @@ class PostListSerializer(serializers.ModelSerializer):
                     category, context={"request": request}
                 )
                 return serializer.data
+            if type_param =='dharitri-english':
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
@@ -127,6 +132,11 @@ class PostTrendingNewsSerializer(serializers.ModelSerializer):
 
         try:
             if not type_param != "english":
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
+            if type_param =='dharitri-english':
                 serializer = CategoryListSerializer(
                     category, context={"request": request}
                 )
@@ -206,6 +216,11 @@ class PostDetailSerializer(serializers.ModelSerializer):
                     category, context={"request": request}
                 )
                 return serializer.data
+            if type_param =='dharitri-english':
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
             else:
                 return {
                     "name": category.marathi_name,
@@ -255,6 +270,11 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
         try:
             if not type_param != "english":
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
+            if type_param =='dharitri-english':
                 serializer = CategoryListSerializer(
                     category, context={"request": request}
                 )
@@ -350,6 +370,8 @@ class CategoryArticlesSerializer(serializers.ModelSerializer):
         # if request and 'type' in request.GET:
         type_param = request.GET.get("type")
         if type_param == "english":
+            return obj.name
+        if type_param =='dharitri-english':
             return obj.name
         else:
             return obj.marathi_name

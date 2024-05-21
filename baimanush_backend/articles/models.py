@@ -35,7 +35,8 @@ class Post(PostMixin, UserStampedMixin):
     POST_CHOICES = (
         ("english", "English"),
         ("marathi", "Marathi"),
-        ("dhariti", "Dhariti"),
+        ("dharitri-english", "Dharitri English"),
+        ("dharitri-marathi", "Dharitri Marathi"),
     )
 
     type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
