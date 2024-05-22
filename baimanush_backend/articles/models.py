@@ -72,10 +72,3 @@ class SubscribeMail(StatusMixin, TimeStampedModel):
     def __str__(self):
         return str(self.mail)
 
-
-class PostComments(SlugMixin, UserStampedMixin, CommentMixin):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True)
-
-    class Meta:
-        verbose_name = "Post Comment"
-        verbose_name_plural = "Post Comments"

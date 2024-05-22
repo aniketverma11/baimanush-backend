@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from baimanush_backend.photos.models import Photos, Photos_Images, PhotoComments
+from baimanush_backend.photos.models import Photos, Photos_Images
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
 )
 from baimanush_backend.articles.api.v1.serializers import TagSerializer
-
+from baimanush_backend.users.api.serializers import UserProfileSerializer
 
 class ImagesSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -93,7 +93,3 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         return trending_serializer.data
 
 
-class PhotosCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PhotoComments
-        fields = "__all__"

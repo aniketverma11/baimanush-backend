@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from baimanush_backend.utils.response import cached_response
-from baimanush_backend.videos.models import Video, VideoComments
+from baimanush_backend.videos.models import Video
 from baimanush_backend.categories.models import Category, SubCategory
 from baimanush_backend.videos.api.v1.serializers import *
 
@@ -111,40 +111,3 @@ class VideoListViewset(viewsets.ViewSet):
             meta={},
         )
 
-
-class CommentsViewset(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
-    serializer_class = VideosCommentSerializer
-
-    def create(self, request, post_slug):
-        data = request.data
-        user = request.user
-
-        serializer = self.serializer_class(data)
-
-        if serializer.is_valid(raise_exception=True):
-            content = serializer.data["content"]
-
-        try:
-            post = Video.objects.get(slug=post_slug)
-            comment = VideoComments.objects.create(
-                user=user, video=post, content=content
-            )
-        except Exception:
-            return cached_response(
-                request=request,
-                status=status.HTTP_400_BAD_REQUEST,
-                response_status="Failed",
-                message="",
-                data={},
-                meta={},
-            )
-
-        return cached_response(
-            request=request,
-            status=status.HTTP_201_CREATED,
-            response_status="success",
-            message="comment post successfully",
-            data=serializer.data,
-            meta={},
-        )

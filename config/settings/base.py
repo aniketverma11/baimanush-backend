@@ -2,6 +2,7 @@
 """Base settings to build other settings files upon."""
 
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 
@@ -102,6 +103,7 @@ LOCAL_APPS = [
     "baimanush_backend.photos.apps.PhotosConfig",
     "baimanush_backend.videos.apps.VideosConfig",
     "baimanush_backend.utils.apps.UtilsConfig",
+    "baimanush_backend.comments.apps.CommentsConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -339,6 +341,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
+}
+
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 #CORS_URLS_REGEX = r"^/api/.*$"

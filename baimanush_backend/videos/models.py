@@ -46,10 +46,3 @@ class Video(SlugMixin, ImageMixin, StatusMixin, TimeStampedModel, UserStampedMix
     def get_absolute_url(self):
         return reverse("blog:blog_detail", kwargs={"slug": self.slug})
 
-
-class VideoComments(SlugMixin, UserStampedMixin, CommentMixin):
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True)
-
-    class Meta:
-        verbose_name = "Post Comment"
-        verbose_name_plural = "Post Comments"
