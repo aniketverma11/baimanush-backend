@@ -182,7 +182,6 @@ class PostDetailSerializer(serializers.ModelSerializer):
         # Assuming read_more_data is a list of additional data
         request = self.context.get("request")
         type_param = request.GET.get("type")
-        request = self.context.get("request")
         read_more_data = (
             Post.objects.filter(is_deleted=False, is_draft=False, type=type_param)
             .exclude(slug=obj.slug)
@@ -195,8 +194,9 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_treanding_news(self, obj):
         request = self.context.get("request")
+        type_param = request.GET.get("type")
         trending = (
-            Post.objects.filter(is_trending=True, is_deleted=False, is_draft=False)
+            Post.objects.filter(is_trending=True, is_deleted=False, is_draft=False, type=type_param)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed

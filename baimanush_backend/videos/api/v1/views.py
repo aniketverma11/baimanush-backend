@@ -24,7 +24,7 @@ class VideoListViewset(viewsets.ViewSet):
             except Video.DoesNotExist:
                 videos = []
 
-            serializer = self.serializer_class(videos, many=True)
+            serializer = self.serializer_class(videos, many=True, context={"request": request})
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
@@ -55,7 +55,7 @@ class VideoListViewset(viewsets.ViewSet):
                 pass
 
             if article:
-                serializer = VideoDetailSerializer(article)
+                serializer = VideoDetailSerializer(article, context={"request": request})
                 return cached_response(
                     request=request,
                     status=status.HTTP_200_OK,
