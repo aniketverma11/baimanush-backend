@@ -84,8 +84,10 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         return read_more_serializer.data
 
     def get_treanding_news(self, obj):
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
         trending = (
-            Photos.objects.filter(is_trending=True)
+            Photos.objects.filter(is_trending=True, type=type_param)
             .exclude(slug=obj.slug)
             .order_by("-publish")[:4]
         )  # Fetch read_more data as needed
