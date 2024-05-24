@@ -164,7 +164,10 @@ class PostListViewset(viewsets.ViewSet):
         type = request.GET.get("type")
         if type:
             try:
-                articles = self.queryset.filter(is_trending=True, type=type).order_by(
+                article = self.queryset.filter(home_screen=True, type=type).order_by(
+                    "-publish"
+                ).first()
+                articles = self.queryset.filter(is_trending=True, type=type).exclude(slug=article.slug).order_by(
                     "-publish"
                 )[:8]
             except Post.DoesNotExist:
