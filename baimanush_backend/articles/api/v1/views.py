@@ -169,7 +169,7 @@ class PostListViewset(viewsets.ViewSet):
                 ).first()
                 articles = self.queryset.filter(is_trending=True, type=type).exclude(slug=article.slug).order_by(
                     "-publish"
-                )[:8]
+                )[:5]
             except Post.DoesNotExist:
                 articles = []
 
