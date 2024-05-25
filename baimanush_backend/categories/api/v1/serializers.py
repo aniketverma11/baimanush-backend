@@ -19,6 +19,11 @@ class CategorySerializer(serializers.ModelSerializer):
                 "slug": instance.slug,
                 "marathi_name": instance.marathi_name,
             }
+        if type_param =='dharitri-english':
+                return {
+                    "name": instance.name,
+                    "slug": instance.slug,
+                }
         return {
             "name": instance.marathi_name,
             "slug": instance.slug,
