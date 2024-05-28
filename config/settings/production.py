@@ -4,6 +4,7 @@ from .base import DATABASES
 from .base import INSTALLED_APPS
 from .base import SPECTACULAR_SETTINGS
 from .base import env
+from storages.backends.s3boto3 import S3Boto3Storage
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -89,13 +90,14 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 
 # STATIC & MEDIA
 # ------------------------
-STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/" 
 
-from storages.backends.s3boto3 import S3Boto3Storage  # noqa E402   
+  # noqa E402   
 class StaticRootS3Boto3Storage(S3Boto3Storage): 
     location = "static" 
     default_acl = "public-read" 
+    
+STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
+STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/" 
 class MediaRootS3Boto3Storage(S3Boto3Storage):  
     location = "media"  
     file_overwrite = False  
