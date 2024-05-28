@@ -105,7 +105,7 @@ class MediaRootS3Boto3Storage(S3Boto3Storage):
 # endregion 
 DEFAULT_FILE_STORAGE = "config.settings.production.MediaRootS3Boto3Storage" 
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/" 
-# COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'   
+COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'   
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ ANYMAIL = {
 # Collectfast
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
-# INSTALLED_APPS = ["collectfast", *INSTALLED_APPS]
+INSTALLED_APPS = ["collectfast", *INSTALLED_APPS]
 
 # LOGGING
 # ------------------------------------------------------------------------------
