@@ -105,7 +105,9 @@ class MediaRootS3Boto3Storage(S3Boto3Storage):
 # endregion 
 DEFAULT_FILE_STORAGE = "config.settings.production.MediaRootS3Boto3Storage" 
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/" 
-COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'   
+COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy' 
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # EMAIL
 # ------------------------------------------------------------------------------
