@@ -62,7 +62,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
-INSTALLED_APPS += ["storages"]
+# INSTALLED_APPS += ["storages"]
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID")
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
@@ -92,19 +92,20 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 # ------------------------
 
   # noqa E402   
-class StaticRootS3Boto3Storage(S3Boto3Storage): 
-    location = "static" 
-    default_acl = "public-read" 
-    
-STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/" 
+# class StaticRootS3Boto3Storage(S3Boto3Storage): 
+#     location = "static" 
+#     default_acl = "public-read" 
+
+# STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
+# STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/" 
 class MediaRootS3Boto3Storage(S3Boto3Storage):  
     location = "media"  
     file_overwrite = False  
     default_acl = 'public-read' 
 # endregion 
 DEFAULT_FILE_STORAGE = "config.settings.production.MediaRootS3Boto3Storage" 
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"    
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/" 
+COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'   
 
 # EMAIL
 # ------------------------------------------------------------------------------
