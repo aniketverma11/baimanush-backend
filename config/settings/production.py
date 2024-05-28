@@ -157,7 +157,7 @@ ANYMAIL = {
 # Collectfast
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
-INSTALLED_APPS = ["collectfast", *INSTALLED_APPS]
+# INSTALLED_APPS = ["collectfast", *INSTALLED_APPS]
 
 # LOGGING
 # ------------------------------------------------------------------------------
