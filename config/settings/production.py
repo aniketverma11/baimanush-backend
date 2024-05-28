@@ -3,6 +3,7 @@ from .base import *  # noqa: F403
 from .base import DATABASES
 from .base import INSTALLED_APPS
 from .base import SPECTACULAR_SETTINGS
+from .base import MIDDLEWARE
 from .base import env
 
 # GENERAL
@@ -20,14 +21,8 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
 # ------------------------------------------------------------------------------
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("REDIS_URL"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Mimicing memcache behavior.
-            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
-            "IGNORE_EXCEPTIONS": True,
-        },
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "",
     },
 }
 
@@ -61,7 +56,7 @@ CACHES = {
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
-INSTALLED_APPS += ["storages"]
+INSTALLED_APPS += ["storages", "debug_toolbar", "django_extensions"]
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID")
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
@@ -200,3 +195,4 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
+SECURE_CONTENT_TYPE_NOSNIFF = False
