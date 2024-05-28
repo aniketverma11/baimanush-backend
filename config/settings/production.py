@@ -3,7 +3,6 @@ from .base import *  # noqa: F403
 from .base import DATABASES
 from .base import INSTALLED_APPS
 from .base import SPECTACULAR_SETTINGS
-from .base import MIDDLEWARE
 from .base import env
 
 # GENERAL
@@ -21,42 +20,48 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
 # ------------------------------------------------------------------------------
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Mimicing memcache behavior.
+            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
+            "IGNORE_EXCEPTIONS": True,
+        },
     },
 }
-
+CACHE_TTL = 60 * 15
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
-#SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
-#SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
-# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
-#SESSION_COOKIE_SECURE = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
-#CSRF_COOKIE_SECURE = True
-# https://docs.djangoproject.com/en/dev/topics/security/#ssl-https
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-seconds
-# TODO: set this to 60 seconds first and then to 518400 once you prove the former works
-#SECURE_HSTS_SECONDS = 60
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-include-subdomains
-#SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
-#    "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
-#   default=True,
-#)
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-preload
-#SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
-# https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
-#SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
-#    "DJANGO_SECURE_CONTENT_TYPE_NOSNIFF",
-#    default=True,
-#)
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# # https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
+# SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+# # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
+# SESSION_COOKIE_SECURE = True
+# # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
+# CSRF_COOKIE_SECURE = True
+# # https://docs.djangoproject.com/en/dev/topics/security/#ssl-https
+# # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-seconds
+# # TODO: set this to 60 seconds first and then to 518400 once you prove the former works
+# SECURE_HSTS_SECONDS = 60
+# # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-include-subdomains
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
+#     "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
+#     default=True,
+# )
+# # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-preload
+# SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
+# # https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
+SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
+    "DJANGO_SECURE_CONTENT_TYPE_NOSNIFF",
+    default=False,
+)
 
 # STORAGES
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
-INSTALLED_APPS += ["storages", "debug_toolbar", "django_extensions"]
+INSTALLED_APPS += ["storages"]
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID")
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
@@ -81,40 +86,23 @@ AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
 AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
 aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
 # STATIC & MEDIA
 # ------------------------
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "location": "media",
-            "file_overwrite": False,
-        },
-    }
-    # "staticfiles": {
-    #     "BACKEND": "storages.backends.s3.S3Storage",
-    #     "OPTIONS": {
-    #         "location": "static",
-    #         "default_acl": "public-read",
-    #     },
-    # },
-}
-MEDIA_URL = f"https://{aws_s3_domain}/media/"
-COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
-# STATIC_URL = f"https://{aws_s3_domain}/static/"
-# STATIC
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(BASE_DIR / "staticfiles")
-# https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = "/static/"
-# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
-# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
+STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/" 
+
+from storages.backends.s3boto3 import S3Boto3Storage  # noqa E402   
+class StaticRootS3Boto3Storage(S3Boto3Storage): 
+    location = "static" 
+    default_acl = "public-read" 
+class MediaRootS3Boto3Storage(S3Boto3Storage):  
+    location = "media"  
+    file_overwrite = False  
+    default_acl = 'public-read' 
+# endregion 
+DEFAULT_FILE_STORAGE = "config.settings.production.MediaRootS3Boto3Storage" 
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"    
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -208,4 +196,3 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
-SECURE_CONTENT_TYPE_NOSNIFF = False
