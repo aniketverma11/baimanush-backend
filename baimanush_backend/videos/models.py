@@ -14,8 +14,8 @@ class Video(SlugMixin, ImageMixin, StatusMixin, TimeStampedModel, UserStampedMix
     POST_CHOICES = (
         ("english", "English"),
         ("marathi", "Marathi"),
-        ("dhariti-english", "Dharitri English"),
-        ("dhariti-marathi", "Dharitri Marathi")
+        ("dharitri-english", "Dharitri English"),
+        ("dharitri-marathi", "Dharitri Marathi")
     )
 
     type = models.CharField(_("Post Type"), max_length=20, choices=POST_CHOICES)
