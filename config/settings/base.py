@@ -388,6 +388,11 @@ SPECTACULAR_SETTINGS = {
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     "default": {
+        "extraAllowedContent": "iframe[*]",
+        "removePlugins": "image",
+        "extraPlugins": "image2",
+        "image2_alignClasses": ["image-align-left", "image-align-center", "image-align-right"],
+        "image2_disableResizer": True,
         "toolbar_YouCustomToolbarConfig": [
             {
                 "name": "document",
@@ -526,7 +531,7 @@ CKEDITOR_CONFIGS = {
         "toolbar_Custom": [
             ["Iframe"],
         ],
-        "extraAllowedContent": "iframe[src]",
+        "extraAllowedContent": "iframe[*]",
     },
 }
 
