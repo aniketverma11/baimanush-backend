@@ -152,13 +152,13 @@ class UserStampedMixin(models.Model):
 
 class MetaTagMixin(models.Model):
     meta_title = models.TextField(
-        _("Meta Title"), blank=True, null=True, validators=[validator_ascii]
+        _("Meta Title"), blank=True, null=True
     )
     meta_description = models.TextField(
-        _("Meta Description"), blank=True, null=True, validators=[validator_ascii]
+        _("Meta Description"), blank=True, null=True
     )
     meta_keywords = models.TextField(
-        _("Meta Keywords"), blank=True, null=True, validators=[validator_ascii]
+        _("Meta Keywords"), blank=True, null=True
     )
 
     class Meta:
@@ -213,7 +213,7 @@ class PostMixin(SlugMixin, ImageMixin, MetaTagMixin, StatusMixin, TimeStampedMod
         _("short description"), max_length=500, blank=True
     )
     content = RichTextUploadingField(_("content"), blank=True, null=True)
-    # tag = models.CharField(_("tag"), max_length=255, null=True, blank=True, validators=[validator_ascii])
+    # tag = models.CharField(_("tag"), max_length=255, null=True, blank=True)
     publish = models.DateTimeField(
         _("publish datetime"), auto_now=False, auto_now_add=False, default=timezone.now
     )
@@ -308,7 +308,7 @@ class CommentMixin(StatusMixin, TimeStampedModel):
         settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True
     )
     content = models.TextField(
-        _("content"), blank=True, null=True, validators=[validator_ascii]
+        _("content"), blank=True, null=True
     )
 
     def __str__(self):
@@ -332,9 +332,9 @@ class LikeMixin(TimeStampedModel):
 
 
 # class TopicMixin(SlugMixin, MetaTagMixin, ImageMixin, TimeStampedModel):
-#     name = models.CharField(_("name"), max_length=100, null=False, blank=False, validators=[validator_ascii])
-#     title = models.CharField(_("title"), max_length=255, null=True, blank=True, validators=[validator_ascii])
-#     icon = models.CharField(_("icon"), max_length=100, null=True, blank=True, validators=[validator_ascii])
+#     name = models.CharField(_("name"), max_length=100, null=False, blank=False)
+#     title = models.CharField(_("title"), max_length=255, null=True, blank=True)
+#     icon = models.CharField(_("icon"), max_length=100, null=True, blank=True)
 #     icon_image = models.ImageField(_("Icon Image"), upload_to=upload_location, null=True, blank=True)
 #     content = RichTextUploadingField(_("content"), blank=True, null=True)
 #     pipedrive_id = models.PositiveIntegerField(_('Pipedrive ID'), null=True, blank=True)
@@ -362,13 +362,13 @@ class FAQMixin(StatusMixin, TimeStampedModel):
 
 class TopicMixin(SlugMixin, MetaTagMixin, ImageMixin, TimeStampedModel):
     name = models.CharField(
-        _("name"), max_length=100, null=False, blank=False, validators=[validator_ascii]
+        _("name"), max_length=100, null=False, blank=False
     )
     title = models.CharField(
-        _("title"), max_length=255, null=True, blank=True, validators=[validator_ascii]
+        _("title"), max_length=255, null=True, blank=True
     )
     icon = models.CharField(
-        _("icon"), max_length=100, null=True, blank=True, validators=[validator_ascii]
+        _("icon"), max_length=100, null=True, blank=True
     )
     icon_image = models.ImageField(
         _("Icon Image"), upload_to=upload_location, null=True, blank=True

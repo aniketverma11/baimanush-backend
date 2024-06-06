@@ -24,7 +24,7 @@ class Reference(SlugMixin, StatusMixin, TimeStampedModel):
 
 class Tag(SlugMixin, StatusMixin, TimeStampedModel):
     tag = models.CharField(
-        _("Tag"), max_length=255, blank=False, null=False, validators=[validator_ascii]
+        _("Tag"), max_length=255, blank=False, null=False
     )
 
     def __str__(self):
