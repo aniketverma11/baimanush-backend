@@ -31,4 +31,5 @@ urlpatterns = [
     ),
     path("trending-posts/", views.PostListViewset.as_view({"get": "trending_posts"})),
     path("most-viewed/", views.PostListViewset.as_view({"get": "most_viewed"})),
+    path("subscribe/", views.SubscribeEmailViewset.as_view({"post":"create"}))
 ]

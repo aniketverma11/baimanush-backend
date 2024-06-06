@@ -430,3 +430,31 @@ class MemberPostDetailViewset(viewsets.ViewSet):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+
+class SubscribeEmailViewset(viewsets.ViewSet):
+    permission_classes = ()
+    authentication_classes = ()
+    serializer_class = SubscribeEmailSerializers
+
+    def create(self, request):
+        data = request.data
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return cached_response(
+                request=request,
+                status=status.HTTP_201_CREATED,
+                response_status="success",
+                message="",
+                data={},
+                meta={},
+            )
+        
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="failed",
+            message="",
+            data={},
+            meta={},
+        )

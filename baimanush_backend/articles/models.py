@@ -67,8 +67,8 @@ class Post(PostMixin, UserStampedMixin):
 
 
 class SubscribeMail(StatusMixin, TimeStampedModel):
-    mail = models.EmailField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.mail)
+        return str(self.email)
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from baimanush_backend.articles.models import Post, Tag, Reference
+from baimanush_backend.articles.models import Post, Tag, Reference, SubscribeMail
 from baimanush_backend.categories.api.v1.serializers import (
     CategoryListSerializer,
     SubcategoryListSerializer,
@@ -377,3 +377,8 @@ class CategoryArticlesSerializer(serializers.ModelSerializer):
         else:
             return obj.marathi_name
 
+
+class SubscribeEmailSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = SubscribeMail
+        fields = ["email"]
