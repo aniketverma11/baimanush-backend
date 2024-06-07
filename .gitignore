@@ -283,3 +283,4 @@ baimanush_backend/photos/migrations/
 baimanush_backend/videos/migrations/
 baimanush_backend/categories/migrations/
 baimanush_backend/comments/migrations/
+**/**/migrations/

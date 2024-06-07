@@ -27,6 +27,7 @@ urlpatterns = [
     path("api/v1/photos/", include("baimanush_backend.photos.urls")),
     path("api/v1/videos/", include("baimanush_backend.videos.urls")),
     path("api/v1/comment/", include("baimanush_backend.comments.urls")),
+    path("api/v1/bookmarks/", include("baimanush_backend.bookmarks.urls")),
     # Your stuff: custom urls includes go here
     # ...
     # Media files

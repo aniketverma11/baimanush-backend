@@ -103,7 +103,8 @@ LOCAL_APPS = [
     "baimanush_backend.photos.apps.PhotosConfig",
     "baimanush_backend.videos.apps.VideosConfig",
     "baimanush_backend.utils.apps.UtilsConfig",
-    "baimanush_backend.comments.apps.CommentsConfig"
+    "baimanush_backend.comments.apps.CommentsConfig",
+    "baimanush_backend.bookmarks.apps.BookmarksConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
