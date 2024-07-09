@@ -40,7 +40,7 @@ class PhotoslistSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:80] + "..."
+            return obj.title[:125]
         return ""
 
     class Meta:

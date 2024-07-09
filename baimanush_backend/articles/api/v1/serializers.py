@@ -47,7 +47,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:50] + "..."
+            return obj.title[:100]
         return ""
 
     def get_short_description(self, obj):
@@ -292,7 +292,7 @@ class MemberOnlyListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:50] + "..."
+            return obj.title[:125]
         return ""
 
     class Meta:
@@ -333,7 +333,7 @@ class CategoryPostListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:75] + "..."
+            return obj.title[:90]
         return ""
 
     def get_content(self, obj):

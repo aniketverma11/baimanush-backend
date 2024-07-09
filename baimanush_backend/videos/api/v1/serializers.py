@@ -29,7 +29,7 @@ class VideoListSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         if obj.title:
-            return obj.title[:75] + "..."
+            return obj.title[:125]
         return ""
 
     def get_category(self, obj):

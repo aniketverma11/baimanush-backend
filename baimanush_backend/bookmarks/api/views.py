@@ -12,8 +12,9 @@ from baimanush_backend.bookmarks.models import BookMarks
 from baimanush_backend.bookmarks.api.serializers import BookmarkCreateSerializer, BookmarkGetSerializer, BookMarkUpdateSerializer
 
 
-class BookmarksViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+class BookmarksViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = []
     queryset = BookMarks.objects.filter(is_active=True, is_deleted=False)
     serializer_class = BookmarkGetSerializer
 
