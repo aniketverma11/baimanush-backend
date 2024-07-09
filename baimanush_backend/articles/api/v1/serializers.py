@@ -52,12 +52,12 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return obj.short_description[:200] + "..."
+            return obj.short_description #[:200] + "..."
         return ""
 
     def get_content(self, obj):
         if obj.content:
-            return obj.content[:200] + "...</p>"
+            return obj.content #[:200] + "...</p>"
         return ""
 
     def get_category(self, obj):
