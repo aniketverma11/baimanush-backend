@@ -93,6 +93,12 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ("slug", "title", "author")
     filter_horizontal = ("sub_categories", "tags")
 
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:  # If the object is being created
+            obj.created_by = request.user
+        obj.modified_by = request.user
+        super().save_model(request, obj, form, change)
+
 
 admin.site.register(Post, PostAdmin)
 
