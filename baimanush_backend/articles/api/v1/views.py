@@ -1,3 +1,5 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -295,16 +297,33 @@ class PostListViewset(viewsets.ViewSet):
             except Post.DoesNotExist:
                 articles = []
 
+            paginator = Paginator(articles, 10)  # Show 10 articles per page
+            page = request.GET.get('page')
+
+            try:
+                paged_articles = paginator.page(page)
+            except PageNotAnInteger:
+                paged_articles = paginator.page(1)
+            except EmptyPage:
+                paged_articles = paginator.page(paginator.num_pages)
+
             serializer = RssFeedSerializer(
-                articles, many=True, context={"request": request}
+                paged_articles, many=True, context={"request": request}
             )
+
             return cached_response(
                 request=request,
                 status=status.HTTP_200_OK,
                 response_status="success",
                 message="",
                 data=serializer.data,
-                meta={},
+                meta={
+                    "page": paged_articles.number,
+                    "pages": paginator.num_pages,
+                    "total": paginator.count,
+                    "has_next": paged_articles.has_next(),
+                    "has_previous": paged_articles.has_previous()
+                },
             )
 
         return cached_response(
