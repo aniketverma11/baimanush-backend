@@ -52,12 +52,12 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_short_description(self, obj):
         if obj.short_description:
-            return obj.short_description #[:200] + "..."
+            return obj.short_description[:200] + "..."
         return ""
 
     def get_content(self, obj):
         if obj.content:
-            return obj.content #[:200] + "...</p>"
+            return obj.content[:10] + "...</p>"
         return ""
 
     def get_category(self, obj):
@@ -382,3 +382,89 @@ class SubscribeEmailSerializers(serializers.ModelSerializer):
     class Meta:
         model = SubscribeMail
         fields = ["email"]
+
+
+class RssFeedSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    short_description = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    audio = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return ""
+
+    def get_audio(self, obj):
+        if obj.audio:
+            return obj.audio.url
+        return ""
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """Perform necessary eager loading of data."""
+        # select_related for "to-one" relationships
+        queryset = queryset.select_related("category")
+        return queryset
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title
+        return ""
+
+    def get_short_description(self, obj):
+        if obj.short_description:
+            return obj.short_description
+        return ""
+
+    def get_content(self, obj):
+        if obj.content:
+            return obj.content
+        return ""
+
+    def get_category(self, obj):
+        request = self.context.get("request")
+        type_param = request.GET.get("type")
+        category = obj.category
+
+        try:
+            if not type_param != "english":
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
+            if type_param =='dharitri-english':
+                serializer = CategoryListSerializer(
+                    category, context={"request": request}
+                )
+                return serializer.data
+            else:
+                return {
+                    "name": category.marathi_name,
+                    "slug": category.slug,
+                }
+        except Exception:
+            return {
+                "name": "",
+                "slug": "",
+            }
+
+    class Meta:
+        model = Post
+        fields = (
+            "slug",
+            "short_description",
+            "title",
+            "content",
+            "image",
+            "audio",
+            "image_description",
+            "category",
+            "tags",
+            "created_by",
+            "author",
+            "publish",
+        )

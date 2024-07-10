@@ -284,6 +284,69 @@ class PostListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
+    
+    def rss_feed_list(self, request, category_slug):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(
+                    category__slug=category_slug, type=type
+                ).order_by("-publish")
+            except Post.DoesNotExist:
+                articles = []
+
+            serializer = RssFeedSerializer(
+                articles, many=True, context={"request": request}
+            )
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="failed",
+            message="Type is required",
+            data={},
+            meta={},
+        )
+    
+    def rss_feed_get(self, request, slug):
+        type = request.GET.get("type")
+        if type:
+            try:
+                articles = self.queryset.filter(
+                    slug=slug, type=type
+                ).order_by("-publish").first()
+            except Post.DoesNotExist:
+                articles = []
+
+            serializer = RssFeedSerializer(
+                articles, context={"request": request}
+            )
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="failed",
+            message="Type is required",
+            data={},
+            meta={},
+        )
+
 
 
 class PostDetailViewset(viewsets.ViewSet):
