@@ -392,6 +392,7 @@ class RssFeedSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     image = serializers.SerializerMethodField()
     audio = serializers.SerializerMethodField()
+    article_link = serializers.SerializerMethodField()
 
     def get_image(self, obj):
         if obj.image:
@@ -451,10 +452,15 @@ class RssFeedSerializer(serializers.ModelSerializer):
                 "name": "",
                 "slug": "",
             }
+        
+    def get_article_link(self, obj):
+        link = f"https://baimanus.in/home/news-details?slug={obj.slug}&category={obj.category.slug}"
+        return link
 
     class Meta:
         model = Post
         fields = (
+            "article_link",
             "slug",
             "short_description",
             "title",
