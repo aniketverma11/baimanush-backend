@@ -290,26 +290,26 @@ class PostListViewset(viewsets.ViewSet):
     def rss_feed_list(self, request, category_slug):
         type = request.GET.get("type")
         if type:
-            try:
-                if type=="marathi" and category_slug=="dharitri-marathi":
-                    type="dharitri-marathi"
-                    articles = self.queryset.filter(
+            # try:
+            if category_slug=="dharitri-marathi":
+                type="dharitri-marathi"
+                articles = self.queryset.filter(
+                    type=category_slug
+                ).order_by("-publish")
+            
+            elif category_slug=="dharitri-english":
+                type="dharitri-english"
+                articles = self.queryset.filter(
                         type=type
-                    ).order_by("-publish")
-                
-                if type=="english" and category_slug=="dharitri-english":
-                    type="dharitri-english"
-                    articles = self.queryset.filter(
-                         type=type
-                    ).order_by("-publish")
+                ).order_by("-publish")
 
-                else:
-                    articles = self.queryset.filter(
-                        category__slug=category_slug, type=type
-                    ).order_by("-publish")
+            else:
+                articles = self.queryset.filter(
+                    category__slug=category_slug, type=type
+                ).order_by("-publish")
 
-            except Post.DoesNotExist:
-                articles = []
+            # except Post.DoesNotExist:
+            #     articles = []
 
             paginator = Paginator(articles, 10)  # Show 10 articles per page
             page = request.GET.get('page')
