@@ -454,7 +454,10 @@ class RssFeedSerializer(serializers.ModelSerializer):
             }
         
     def get_article_link(self, obj):
-        link = f"https://baimanus.in/home/news-details?slug={obj.slug}&category={obj.category.slug}"
+        try:
+            link = f"https://baimanus.in/home/news-details?slug={obj.slug}&category={obj.category.slug}"
+        except Exception:
+            link = f"https://baimanus.in/home/news-details?slug={obj.slug}&category=undefined"
         return link
 
     class Meta:
