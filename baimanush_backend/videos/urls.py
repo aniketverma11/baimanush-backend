@@ -6,4 +6,5 @@ urlpatterns = [
     path("", views.VideoListViewset.as_view({"get": "list"})),
     path("<str:slug>", views.VideoListViewset.as_view({"get": "retrieve"})),
     path("most-viewed/", views.VideoListViewset.as_view({"get": "most_viewed"})),
+    path("rss-list/", views.VideoListViewset.as_view({"get": "rss_list"})),
 ]

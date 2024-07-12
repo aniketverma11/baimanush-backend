@@ -105,3 +105,65 @@ class VideoDetailSerializer(serializers.ModelSerializer):
         return trending_serializer.data
 
 
+class VideoRSSListSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    # short_description = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
+    tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    video_link = serializers.SerializerMethodField()
+
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """Perform necessary eager loading of data."""
+        # select_related for "to-one" relationships
+        queryset = queryset.select_related("category")
+        return queryset
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return ""
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title
+        return ""
+
+    def get_category(self, obj):
+        if obj.category:
+            return obj.category.slug
+        return ""
+
+    # def get_short_description(self, obj):
+    #     if obj.short_description:
+    #         return ""  
+    #     return ""
+
+    def get_content(self, obj):
+        if obj.content:
+            return obj.content
+        return ""
+    
+    def get_video_link(self, obj):
+        link = f"https://baimanus.in/home/videos?slug={obj.slug}"
+        return link
+
+    class Meta:
+        model = Video
+        fields = (
+            "video_link",
+            "slug",
+            "title",
+            "short_description",
+            "video",
+            "content",
+            "image",
+            "image_description",
+            "category",
+            "tags",
+            "author",
+            "publish",
+        )

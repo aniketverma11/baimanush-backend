@@ -110,4 +110,30 @@ class VideoListViewset(viewsets.ViewSet):
             data={},
             meta={},
         )
+    
+    def rss_list(self, request):
+        type = request.GET.get("type")
+        if type:
+            try:
+                videos = self.queryset.filter(type=type).order_by("-publish")
+            except Video.DoesNotExist:
+                videos = []
+
+            serializer = VideoRSSListSerializer(videos, many=True, context={"request": request})
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={},
+            )
+        return cached_response(
+            request=request,
+            status=status.HTTP_400_BAD_REQUEST,
+            response_status="success",
+            message="Type is required",
+            data={},
+            meta={},
+        )
 
