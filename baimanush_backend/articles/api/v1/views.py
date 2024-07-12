@@ -292,13 +292,15 @@ class PostListViewset(viewsets.ViewSet):
         if type:
             try:
                 if type=="marathi" and category_slug=="dharitri-marathi":
+                    type="dharitri-marathi"
                     articles = self.queryset.filter(
-                         type=category_slug
+                        type=type
                     ).order_by("-publish")
                 
                 if type=="english" and category_slug=="dharitri-english":
+                    type="dharitri-english"
                     articles = self.queryset.filter(
-                         type=category_slug
+                         type=type
                     ).order_by("-publish")
 
                 else:
