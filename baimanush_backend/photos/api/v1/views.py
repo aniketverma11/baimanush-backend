@@ -6,8 +6,11 @@ from baimanush_backend.photos.models import Photos, Photos_Images
 from .serializers import (
     PhotosDetailSerializer,
     ImagesSerializer,
-    PhotoslistSerializer
+    PhotoslistSerializer,
+    PhotosRssFeedSerializer
 )
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class PhotosViewSet(viewsets.ViewSet):
@@ -104,4 +107,43 @@ class PhotosViewSet(viewsets.ViewSet):
             data={},
             meta={},
         )
+    
+    def rss_feed_list(self, request, category_slug):
+        type = request.GET.get("type")
+        if type:
+            # try:
+            
+            photos = self.queryset.filter(
+                type=type
+            ).order_by("-publish")
+
+
+            paginator = Paginator(photos, 10)  # Show 10 articles per page
+            page = request.GET.get('page')
+
+            try:
+                paged_articles = paginator.page(page)
+            except PageNotAnInteger:
+                paged_articles = paginator.page(1)
+            except EmptyPage:
+                paged_articles = paginator.page(paginator.num_pages)
+
+            serializer = PhotosRssFeedSerializer(
+                paged_articles, many=True, context={"request": request}
+            )
+
+            return cached_response(
+                request=request,
+                status=status.HTTP_200_OK,
+                response_status="success",
+                message="",
+                data=serializer.data,
+                meta={
+                    "page": paged_articles.number,
+                    "pages": paginator.num_pages,
+                    "total": paginator.count,
+                    "has_next": paged_articles.has_next(),
+                    "has_previous": paged_articles.has_previous()
+                },
+            )
 

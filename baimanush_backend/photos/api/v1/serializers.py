@@ -83,4 +83,34 @@ class PhotosDetailSerializer(serializers.ModelSerializer):
         return read_more_serializer.data
 
 
+class PhotosRssFeedSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    images = ImagesSerializer(many=True, source="photos_images_set")
+    short_description = serializers.SerializerMethodField()
+    category = CategoryListSerializer()
+    tags = TagSerializer(many=True)
+    image = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Photos
+        fields = "__all__"
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return ""
+
+    def get_category(self, obj):
+        if obj.category:
+            return obj.category.name
+        return ""
+
+    def get_short_description(self, obj):
+        if obj.short_description:
+            return ""  # obj.short_description[:200] + '...'
+        return ""
+
+    def get_title(self, obj):
+        if obj.title:
+            return obj.title[:125]
+        return ""
