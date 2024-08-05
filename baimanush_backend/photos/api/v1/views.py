@@ -108,7 +108,7 @@ class PhotosViewSet(viewsets.ViewSet):
             meta={},
         )
     
-    def rss_feed_list(self, request, category_slug):
+    def rss_feed_list(self, request):
         type = request.GET.get("type")
         if type:
             # try:
