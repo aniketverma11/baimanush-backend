@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -201,7 +202,7 @@ class PostListViewset(viewsets.ViewSet):
         if type:
             try:
                 posts = self.queryset.filter(
-                    type=type, title__icontains=query
+                    type=type, Q(title__icontains=query) | Q(short_description__icontains=query)
                 ).order_by("-publish")
             except Exception:
                 posts = self.queryset.filter(type=type).order_by("-publish")[:20]
