@@ -192,7 +192,7 @@ class ForgotPasswordResetSerializer(serializers.Serializer):
 
 class UserUpdateSerializer(serializers.Serializer):
     occupation = serializers.CharField(required=False)
-    mobile = serializers.EmailField(required=False)
+    mobile = serializers.IntegerField(required=False)
     city = serializers.CharField(required=False)
     pincode = serializers.CharField(required=False)
 
