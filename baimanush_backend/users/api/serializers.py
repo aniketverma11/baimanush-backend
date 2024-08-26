@@ -49,7 +49,7 @@ class CreateUserProfileSerializer(serializers.Serializer):
             name=validated_data["first_name"] + validated_data["last_name"],
             email=validated_data["email"],
             password="Baimanus@1234567890",
-            is_active=False,
+            is_active=True,
         )
 
         return user_object

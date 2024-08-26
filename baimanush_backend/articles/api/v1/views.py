@@ -202,8 +202,7 @@ class PostListViewset(viewsets.ViewSet):
         if type:
             try:
                 posts = self.queryset.filter(
-                    type=type, Q(title__icontains=query) | Q(short_description__icontains=query)
-                ).order_by("-publish")
+                    Q(author__icontains=query) | Q(title__icontains=query) | Q(short_description__icontains=query) | Q(meta_keywords__icontains=query), type=type).order_by("-publish")
             except Exception:
                 posts = self.queryset.filter(type=type).order_by("-publish")[:20]
 
