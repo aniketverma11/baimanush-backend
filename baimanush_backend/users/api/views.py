@@ -58,7 +58,7 @@ class CreateProfileViewSet(viewsets.ModelViewSet):
             request=request,
             status=status.HTTP_200_OK,
             response_status="success",
-            message="",
+            message="User Data Get Successfully",
             data=serializer.data,
             meta={},
         )

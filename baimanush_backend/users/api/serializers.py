@@ -66,7 +66,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "last_name",
             "city",
             "occupation",
-            "pincode"
+            "pincode",
         ]
 
 
