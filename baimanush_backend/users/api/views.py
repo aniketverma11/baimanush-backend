@@ -63,7 +63,7 @@ class UserV2Viewset(viewsets.ViewSet):
         )
 
     def sign_up(self, request):
-        user = request.user.uuid
+        user = request.user
         
         _user = User.objects.filter(email=user.email).first()
         if not _user:
