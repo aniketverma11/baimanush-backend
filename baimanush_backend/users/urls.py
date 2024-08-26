@@ -38,6 +38,22 @@ urlpatterns = [
         ),
     ),
     path(
+        "update-profile/", 
+        CreateProfileViewSet.as_view(
+            {
+                "post": "sign_up",
+            }
+        ),
+    ),
+    path(
+        "get-user/",
+        CreateProfileViewSet.as_view(
+            {
+                "get": "get",
+            }
+        ),
+    ),
+    path(
         "forgot/",
         ForgotPasswordViewSet.as_view(
             {

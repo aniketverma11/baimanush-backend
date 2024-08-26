@@ -17,6 +17,10 @@ class User(AbstractUser, UUIDMixin, MobileMixin):
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = CharField(_("First Name of User"), blank=True, max_length=255)
     last_name = CharField(_("Last Name of User"), blank=True, max_length=255)
+    occupation = CharField(_("Occupation"), blank=True, max_length=255)
+    city = CharField(_("city"), blank=True, max_length=255)
+    pincode = CharField(_("Pincode"), blank=True, max_length=255)
+
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.

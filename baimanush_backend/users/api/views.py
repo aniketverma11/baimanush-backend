@@ -22,6 +22,8 @@ from .serializers import (
     MyTokenObtainPairSerializer,
     ForgotPasswordResetSerializer,
     ForgotPasswordSerializer,
+    UserUpdateSerializer,
+    UserProfileSerializer
 )
 from utils.response import cached_response
 
@@ -47,6 +49,20 @@ class CreateProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = ()
     serializer_class = CreateUserProfileSerializer
+
+    def get(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user)
+
+        return cached_response(
+            request=request,
+            status=status.HTTP_200_OK,
+            response_status="success",
+            message="",
+            data=serializer.data,
+            meta={},
+        )
+
 
     def create(self, request, *args, **kwargs):
         serializer = CreateUserProfileSerializer(data=request.data)
@@ -107,6 +123,33 @@ class CreateProfileViewSet(viewsets.ModelViewSet):
             data={},
             meta={},
         )
+
+    def sign_up(self, request):
+        user = request.user.uuid
+        
+        _user = User.objects.filter(email=user.email).first()
+        if not _user:
+            return cached_response(
+                request=request,
+                status=status.HTTP_400_BAD_REQUEST,
+                response_status="error",
+                message="something went wrong",
+                data={},
+                meta={},
+            )
+        serializer = UserUpdateSerializer(
+            _user, data=request.data, context={"request": request}
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return cached_response(
+                request=request,
+                status=status.HTTP_205_RESET_CONTENT,
+                response_status="updated success",
+                message="",
+                data={},
+                meta={},
+            )
 
 
 class LoginViewSet(viewsets.ModelViewSet):

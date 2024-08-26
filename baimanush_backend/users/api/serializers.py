@@ -64,6 +64,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "mobile",
             "first_name",
             "last_name",
+            "city",
+            "occupation",
+            "pincode"
         ]
 
 
@@ -187,11 +190,20 @@ class ForgotPasswordResetSerializer(serializers.Serializer):
         return user
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["username", "name", "url"]
+class UserUpdateSerializer(serializers.Serializer):
+    occupation = serializers.CharField(required=False)
+    mobile = serializers.EmailField(required=False)
+    city = serializers.CharField(required=False)
+    pincode = serializers.CharField(required=False)
 
-        extra_kwargs = {
-            "url": {"view_name": "api:user-detail", "lookup_field": "username"}
-        }
+    def update(self, instance, validated_data):
+        # Update the instance with the validated data
+        instance.occupation = validated_data.get("occupation", instance.occupation)
+        instance.mobile = validated_data.get("mobile", instance.mobile)
+        instance.city = validated_data.get("city", instance.city)
+        instance.pincode = validated_data.get("pincode", instance.pincode)
+
+        # Save the updated instance to the database
+        instance.save()
+
+        return instance
