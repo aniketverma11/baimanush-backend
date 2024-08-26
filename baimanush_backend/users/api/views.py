@@ -44,9 +44,9 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
         serializer = UserSerializer(request.user, context={"request": request})
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-class UserV2Viewset(viewsets.ModelViewSet):
+class UserV2Viewset(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-    authentication_classes = ()
+    authentication_classes = []
     serializer_class = CreateUserProfileSerializer
 
     def get(self, request):
