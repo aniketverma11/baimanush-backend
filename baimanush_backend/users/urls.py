@@ -8,6 +8,7 @@ from baimanush_backend.users.api.views import (
     RefreshTokenView,
     ForgotPasswordViewSet,
     ForgotPasswordResetViewSet,
+    UserV2Viewset
 )
 
 
@@ -39,7 +40,7 @@ urlpatterns = [
     ),
     path(
         "update-profile/", 
-        CreateProfileViewSet.as_view(
+        UserV2Viewset.as_view(
             {
                 "post": "sign_up",
             }
@@ -47,7 +48,7 @@ urlpatterns = [
     ),
     path(
         "get-user/",
-        CreateProfileViewSet.as_view(
+        UserV2Viewset.as_view(
             {
                 "get": "get",
             }
